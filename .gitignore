@@ -1,0 +1,14 @@
+# node modules
+node_modules
+
+# tex folder
+tex
+
+# compiled LaTeX files
+*.pdf
+*.tex
+*.synctex.gz
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
