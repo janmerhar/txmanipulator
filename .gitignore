@@ -12,3 +12,6 @@ tex
 *.fdb_latexmk
 *.fls
 *.log
+
+# csv folder
+csv

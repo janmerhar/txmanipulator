@@ -1,12 +1,34 @@
 const fs = require("fs")
 const child_process = require("child_process")
+const csvStringify = require("csv-stringify")
+const { resourceUsage } = require("process")
 const cliArgs = process.argv.slice(2)
+
+/*
+  dodaj še polje za tag v array za csv
+  dodaj še zaznavo imena za tage: spremeni tudi CLI vnose
+ */
 
 class Regex_manipulator {
   constructor(filePath, fileName) {
     this.filePath = filePath
     this.fileText = fs.readFileSync(filePath, "utf-8")
     this.fileName = fileName || filePath.match(/(.+?)(\.[^.]*$|$)/)[1]
+    this.csvData = []
+    this.tag = this.fileText
+      .match(/\\title\{(.)*\}/gi)[0]
+      .replace("\\title{", "")
+      .replace("}", "")
+      .trim()
+      .match(/(\w)+\w+/gi)
+      .map((val) => {
+        if (!isNaN(val)) {
+          return `-${val}`
+        } else {
+          return val.charAt(0).toUpperCase()
+        }
+      })
+      .join("")
   }
   getFileText() {
     return this.fileText
@@ -17,8 +39,12 @@ class Regex_manipulator {
 
   // RegEx ukazi
   removeEndlines() {
+    // ko se zaključi vrstica takoj po znaku \\
     this.fileText = this.fileText.split(/\\\\\r\n/g).join("\r\n")
     this.fileText = this.fileText.split(/\\\\\n/g).join("\n")
+    // ko je še kakšen whitespace preostal
+    this.fileText = this.fileText.split(/\s*\\\\\s*\r\n/g).join("\r\n")
+    this.fileText = this.fileText.split(/\s*\\\\\s*\n/g).join("\n")
   }
 
   removeSections() {
@@ -31,10 +57,10 @@ class Regex_manipulator {
   }
 
   removeDoubleEmptyLines() {
-    this.fileText = this.fileText.split(/\n{4,}/g).join("")
-    this.fileText = this.fileText.split(/(\r\n){4,}/g).join("")
+    this.fileText = this.fileText.split(/\n{5,}/g).join("")
+    this.fileText = this.fileText.split(/(\r\n){5,}/g).join("")
     // odstranim na začetku dokumenta
-    this.fileText = this.fileText.replace("\n\n\n", "")
+    this.fileText = this.fileText.replace(/\n+/, "")
   }
 
   removeTabs() {
@@ -70,21 +96,87 @@ class Regex_manipulator {
     console.log("Written to: " + writePath + "." + writeExtension)
 
     // odprem datoteko s notepad++ ali notepad ali
-    child_process.exec(`notepad++ ${writePath}.${writeExtension}`, (err) => {
-      if (!err) return
-      child_process.exec(`notepad ${writePath}.${writeExtension}`, (err) => {
+    child_process.exec(
+      `start notepad++ ${writePath}.${writeExtension}`,
+      (err) => {
         if (!err) return
-        child_process.exec(`kate ${writePath}.${writeExtension}`, (err) => {
-          if (!err) return
-          child_process.exec(
-            `gedit ${writePath}.${writeExtension}`,
-            (error) => {
-              console.log(error)
-            }
-          )
-        })
-      })
+        child_process.exec(
+          `start notepad ${writePath}.${writeExtension}`,
+          (err) => {
+            if (!err) return
+            child_process.exec(
+              `start kate ${writePath}.${writeExtension}`,
+              (err) => {
+                if (!err) return
+                child_process.exec(
+                  `start gedit ${writePath}.${writeExtension}`,
+                  (error) => {
+                    console.log(error)
+                  }
+                )
+              }
+            )
+          }
+        )
+      }
+    )
+  }
+
+  /*
+   * Del namenjen za
+   * CSV kalkulacije
+   */
+  fillCsvData() {
+    // splitting document into lines
+    const lines = this.fileText.split(/\r*\n/g)
+    // creating an array of indexes
+    const questions = lines.filter((value, index) => {
+      let niz = String(lines[index + 1])
+      if (niz.match(/----+/)) {
+        return index
+      }
     })
+
+    // loopping through every question
+    for (let i = 0; i < questions.length; i++) {
+      let iQuestion = lines.indexOf(questions[i])
+      let iNextQuestion =
+        i + 1 < questions.length
+          ? lines.indexOf(questions[i + 1])
+          : lines.length - 1
+
+      let questionAnswers = [String(lines[iQuestion]), "", this.tag]
+      for (
+        let j = iQuestion + 1 + 1;
+        j < iNextQuestion && String(lines[j]).length != 0;
+        j++
+      ) {
+        questionAnswers[1] += String(lines[j])
+          .trim()
+          .concat(
+            j + 1 < iNextQuestion && String(lines[j + 1]).length != 0
+              ? "\n"
+              : ""
+          )
+      }
+      this.csvData.push(questionAnswers)
+    }
+  }
+  csvWriteToFile(writePath = this.fileName, writeExtension = "csv") {
+    csvStringify(
+      this.csvData,
+      {
+        header: false,
+        delimiter: ";",
+      },
+      (err, csvToWrite) => {
+        if (err) {
+          throw err
+        } else {
+          fs.writeFileSync(writePath + "." + writeExtension, csvToWrite)
+        }
+      }
+    )
   }
 }
 
@@ -95,5 +187,8 @@ regex.removeSections()
 regex.removeLaTeX()
 regex.removeDoubleEmptyLines()
 
-regex.writeToFile()
+// regex.writeToFile()
 // mogoče odprem anki, ko zgeneriram dokument ???
+regex.fillCsvData()
+regex.csvWriteToFile()
+console.log(regex.tag)
