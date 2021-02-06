@@ -1,10 +1,11 @@
 const { Command } = require("commander")
-const CommandFunctions = require("./cli_class")
+const CommandFunctions = require("../cli_class")
 const dateFormat = require("dateformat")
 
 // commander za create_latex_template.js
 const templateCommander = new Command()
 
+// required options
 templateCommander
   .requiredOption(
     "-f, --file-name <strings...>",
@@ -17,6 +18,8 @@ templateCommander
     CommandFunctions.joinThings
   )
 
+// optional options
+// add --anki-tag -atag for custom tags that are not derived from \title
 templateCommander
   .option(
     "-d, date [strings...]",
@@ -28,7 +31,7 @@ templateCommander
     "-a, --author <strings...>",
     "authors name(s)",
     CommandFunctions.joinThings,
-    "Jan Merhar"
+    ""
   )
   .option("-p, --packages <strings...>", "packages added to \\usepackage")
   .option(

@@ -1,0 +1,7 @@
+{
+  "scripts": {
+    "clear_csv": "rm tex/*.csv",
+    "clear_txt": "rm tex/*.txt",
+    "clear_tex": "rm tex/*.tex"
+  }
+}

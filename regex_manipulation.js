@@ -15,6 +15,7 @@ class Regex_manipulator {
     this.fileText = fs.readFileSync(filePath, "utf-8")
     this.fileName = fileName || filePath.match(/(.+?)(\.[^.]*$|$)/)[1]
     this.csvData = []
+    // extracting tag from \title field if tag variable is not pased as an argument
     this.tag = this.fileText
       .match(/\\title\{(.)*\}/gi)[0]
       .replace("\\title{", "")
@@ -174,6 +175,10 @@ class Regex_manipulator {
           throw err
         } else {
           fs.writeFileSync(writePath + "." + writeExtension, csvToWrite)
+          // opening Anki desktop application with a prompt for inporting current CSV file
+          // Anki should be running before we can pass CLI parameter for import
+          child_process.exec(`anki`, (err) => {})
+          child_process.exec(`anki ${writePath + "." + writeExtension}`)
         }
       }
     )
@@ -186,9 +191,7 @@ regex.removeTabs()
 regex.removeSections()
 regex.removeLaTeX()
 regex.removeDoubleEmptyLines()
+regex.writeToFile()
 
-// regex.writeToFile()
-// mogoče odprem anki, ko zgeneriram dokument ???
 regex.fillCsvData()
 regex.csvWriteToFile()
-console.log(regex.tag)
