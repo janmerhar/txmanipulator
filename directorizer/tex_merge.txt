@@ -1,0 +1,7 @@
+SCRIPT FOR MERGING .TEX FILES FROM MULTIPLE SUBDIRECTORIES INTO A SINGLE .TEX/PDF
+
+Procedure:
+ - pass a folder with multiple 1 depth folder that contain files
+ - each folder has a .tex or .pdf document 
+ - merge documets in order of their folders' names
+ - output merged file into a provided directory  
