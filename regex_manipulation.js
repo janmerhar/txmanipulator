@@ -1,7 +1,6 @@
 const fs = require("fs")
 const child_process = require("child_process")
 const csvStringify = require("csv-stringify")
-const { resourceUsage } = require("process")
 const cliArgs = process.argv.slice(2)
 
 /*
@@ -10,26 +9,28 @@ const cliArgs = process.argv.slice(2)
  */
 
 class Regex_manipulator {
-  constructor(filePath, fileName) {
+  constructor(filePath, fileName, tag) {
     this.filePath = filePath
     this.fileText = fs.readFileSync(filePath, "utf-8")
     this.fileName = fileName || filePath.match(/(.+?)(\.[^.]*$|$)/)[1]
     this.csvData = []
     // extracting tag from \title field if tag variable is not pased as an argument
-    this.tag = this.fileText
-      .match(/\\title\{(.)*\}/gi)[0]
-      .replace("\\title{", "")
-      .replace("}", "")
-      .trim()
-      .match(/(\w)+\w+/gi)
-      .map((val) => {
-        if (!isNaN(val)) {
-          return `-${val}`
-        } else {
-          return val.charAt(0).toUpperCase()
-        }
-      })
-      .join("")
+    this.tag =
+      tag ||
+      this.fileText
+        .match(/\\title\{(.)*\}/gi)[0]
+        .replace("\\title{", "")
+        .replace("}", "")
+        .trim()
+        .match(/(\w)+\w+/gi)
+        .map((val) => {
+          if (!isNaN(val)) {
+            return `-${val}`
+          } else {
+            return val.charAt(0).toUpperCase()
+          }
+        })
+        .join("")
   }
   getFileText() {
     return this.fileText

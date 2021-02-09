@@ -1,6 +1,6 @@
 const child_process = require("child_process")
 const fs = require("fs")
-const { templateCommander } = require("./cli_komande")
+const { templateCommander } = require("./cli_args/cli_latex_template")
 
 class LaTeXTemplate {
   constructor(fileName) {

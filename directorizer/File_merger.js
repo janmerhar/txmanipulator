@@ -12,10 +12,11 @@ class File_merger {
       })
       .filter((dirent) => dirent.isDirectory() && dirent.name.charAt(0) != ".")
       .map((dirent) => dirent.name)
-    console.log(pathElements)
+    // console.log(pathElements)
     this.pathElements = pathElements
     return pathElements
   }
+  // serches for only one file with fileExtension in directory
   searchForFiles(fileExtension) {
     const filePaths = []
     for (const pathEl of this.pathElements) {
@@ -27,8 +28,8 @@ class File_merger {
             dirent.isFile() && dirent.name.indexOf(`.${fileExtension}`) != -1
         )
         .map((dirent) => dirent.name)
-      if (dirElements.length > 0) {
-        filePaths.push(path.join(workingDir, dirElements[[0]]))
+      for (const dirEl of dirElements) {
+        filePaths.push(path.join(workingDir, dirEl))
       }
     }
     console.log(filePaths)
@@ -36,6 +37,7 @@ class File_merger {
   }
 }
 
-const fm = new File_merger("D:\\NODE\\LaTeX_helper")
+const fm = new File_merger("D:\\Anki_zapiski\\01_LETNIK\\OMA")
 fm.setSubdirectories()
-fm.searchForFiles("js")
+// i will create only with pdf files as they do not need any further compilation
+fm.searchForFiles("tex")

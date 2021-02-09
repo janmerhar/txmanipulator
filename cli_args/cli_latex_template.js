@@ -1,5 +1,5 @@
 const { Command } = require("commander")
-const CommandFunctions = require("../cli_class")
+const CommandFunctions = require("./cli_class")
 const dateFormat = require("dateformat")
 
 // commander za create_latex_template.js
@@ -22,7 +22,7 @@ templateCommander
 // add --anki-tag -atag for custom tags that are not derived from \title
 templateCommander
   .option(
-    "-d, date [strings...]",
+    "-d, date <strings...>",
     "date given by the user",
     CommandFunctions.joinThings,
     dateFormat(new Date(), "yyyy-mm-dd")
