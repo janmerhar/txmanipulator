@@ -6,6 +6,9 @@ class CommandFunctions {
   static joinThings(value, previous) {
     return `${previous || ""} ${value}`.trim()
   }
+  static lowerCase(value, dummyPrevious) {
+    return value.toLowerCase()
+  }
 }
 
 module.exports = CommandFunctions

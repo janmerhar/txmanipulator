@@ -1,7 +1,8 @@
 const fs = require("fs")
 const path = require("path")
+const PDFMerger = require("pdf-merger-js")
 
-class File_merger {
+class FileMerger {
   constructor(startingPath) {
     this.startingPath = startingPath
   }
@@ -33,11 +34,23 @@ class File_merger {
       }
     }
     console.log(filePaths)
+    this.filePaths = filePaths
     return filePaths
+  }
+  async mergeAndWrite() {
+    const merger = new PDFMerger()
+    const merging = async () => {
+      for (const filePath of this.filePaths) {
+        merger.add(filePath)
+      }
+      await merger.save("1243.pdf")
+    }
+    merging()
   }
 }
 
-const fm = new File_merger("D:\\Anki_zapiski\\01_LETNIK\\OMA")
+const fm = new FileMerger("D:\\Anki_zapiski\\01_LETNIK\\OMA")
 fm.setSubdirectories()
 // i will create only with pdf files as they do not need any further compilation
-fm.searchForFiles("tex")
+fm.searchForFiles("pdf")
+fm.mergeAndWrite()

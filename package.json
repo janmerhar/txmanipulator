@@ -5,5 +5,10 @@
     "clear_tex": "rm tex/*.tex",
     "clear_all": "rm tex/*.csv rm tex/*.txt rm tex/*.tex",
     "clear_lite": "rm tex/*.csv rm tex/*.txt rm "
+  },
+  "dependencies": {
+    "commander": "^7.0.0",
+    "dateformat": "^4.5.1",
+    "pdf-merger-js": "^3.0.5"
   }
 }
