@@ -1,26 +1,24 @@
 const RegexManipulator = require("../manipulator/RegexManipulator")
 const regexManCommander = require("../cli_args/cli_regex_manipulator")
 
-console.log(regexManCommander.opts())
-
-const regex = new RegexManipulator(
+const rm = new RegexManipulator(
   regexManCommander.opts().input,
-  undefined,
+  regexManCommander.opts().fileName,
   regexManCommander.opts().ankiTag
 )
 
-regex.removeEndlines()
-regex.removeTabs()
-regex.removeSections()
-regex.removeLaTeX()
-regex.removeDoubleEmptyLines()
+rm.removeEndlines()
+rm.removeTabs()
+rm.removeSections()
+rm.removeLaTeX()
+rm.removeDoubleEmptyLines()
 
 const typeOfFile = regexManCommander.opts().typeOfFile
 if (typeOfFile == 1 || typeOfFile == 3) {
-  regex.writeToFile()
+  rm.writeToFile()
 }
 
 if (typeOfFile == 2 || typeOfFile == 3) {
-  regex.fillCsvData()
-  regex.csvWriteToFile()
+  rm.fillCsvData()
+  rm.csvWriteToFile()
 }

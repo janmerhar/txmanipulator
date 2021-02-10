@@ -18,10 +18,16 @@ regexManCommander
  * OPTIONAL OPTIONS
  */
 // I may implement optional output path
-regexManCommander.option(
-  "-at, --anki-tag <string>",
-  "input tag field value for imported document: OMA-13"
-)
+regexManCommander
+  .option(
+    "-at, --anki-tag <string>",
+    "input tag field value for imported document: OMA-13"
+  )
+  .option(
+    "-f, --file-name <string>",
+    "name of the output file",
+    CommandFunctions.fileWithoutExtension
+  )
 
 regexManCommander.parse()
 // console.log(regexManCommander.opts())
