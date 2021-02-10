@@ -23,9 +23,7 @@ regexManCommander.option(
   "input tag field value for imported document: OMA-13"
 )
 
-// regexManCommander.parse()
+regexManCommander.parse()
 // console.log(regexManCommander.opts())
 
-module.exports = {
-  regexManCommander,
-}
+module.exports = regexManCommander

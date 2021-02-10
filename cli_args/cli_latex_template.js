@@ -43,6 +43,4 @@ templateCommander
 templateCommander.parse(process.argv)
 // console.log("Options: \n", templateCommander.opts())
 
-module.exports = {
-  templateCommander,
-}
+module.exports = templateCommander

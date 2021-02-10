@@ -1,14 +1,14 @@
 const fs = require("fs")
 const child_process = require("child_process")
 const csvStringify = require("csv-stringify")
-const cliArgs = process.argv.slice(2)
+// const cliArgs = process.argv.slice(2)
 
 /*
   dodaj še polje za tag v array za csv
   dodaj še zaznavo imena za tage: spremeni tudi CLI vnose
  */
 
-class Regex_manipulator {
+class RegexManipulator {
   constructor(filePath, fileName, tag) {
     this.filePath = filePath
     this.fileText = fs.readFileSync(filePath, "utf-8")
@@ -186,13 +186,15 @@ class Regex_manipulator {
   }
 }
 
-const regex = new Regex_manipulator(cliArgs[0])
-regex.removeEndlines()
-regex.removeTabs()
-regex.removeSections()
-regex.removeLaTeX()
-regex.removeDoubleEmptyLines()
-regex.writeToFile()
+// const regex = new RegexManipulator(cliArgs[0])
+// regex.removeEndlines()
+// regex.removeTabs()
+// regex.removeSections()
+// regex.removeLaTeX()
+// regex.removeDoubleEmptyLines()
+// regex.writeToFile()
 
-regex.fillCsvData()
-regex.csvWriteToFile()
+// regex.fillCsvData()
+// regex.csvWriteToFile()
+
+module.exports = RegexManipulator

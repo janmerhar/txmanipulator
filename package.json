@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "commander": "^7.0.0",
+    "csv-stringify": "^5.6.1",
     "dateformat": "^4.5.1",
     "pdf-merger-js": "^3.0.5"
   }
