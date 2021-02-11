@@ -3,13 +3,18 @@
     "clear_csv": "rm tex/*.csv",
     "clear_txt": "rm tex/*.txt",
     "clear_tex": "rm tex/*.tex",
-    "clear_all": "rm tex/*.csv rm tex/*.txt rm tex/*.tex",
-    "clear_lite": "rm tex/*.csv rm tex/*.txt rm "
+    "clear_all": "rm tex/*.csv && rm tex/*.txt && rm tex/*.tex",
+    "clear_lite": "rm tex/*.csv && rm tex/*.txt"
   },
   "dependencies": {
     "commander": "^7.0.0",
     "csv-stringify": "^5.6.1",
     "dateformat": "^4.5.1",
     "pdf-merger-js": "^3.0.5"
+  },
+  "devDependencies": {
+    "@types/dateformat": "^3.0.1",
+    "@types/node": "^14.14.25",
+    "node-tsc": "0.0.14"
   }
 }
