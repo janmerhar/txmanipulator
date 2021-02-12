@@ -10,7 +10,7 @@ templateCommander
   .requiredOption(
     "-f, --file-name <strings...>",
     "name of the LaTeX output file",
-    CommandFunctions.joinThings
+    CommandFunctions.fileWithoutExtension
   )
   .requiredOption(
     "-t, --title <string...>",
@@ -41,6 +41,6 @@ templateCommander
   )
 
 templateCommander.parse(process.argv)
-console.log("Options: \n", templateCommander.opts())
+// console.log("Options: \n", templateCommander.opts())
 
 export { templateCommander }

@@ -18,3 +18,10 @@ csv
 
 # test TS files
 _TS
+
+# ignoring compiled TS files
+*.js
+
+# ignoring other compiled files
+*.csv
+*.txt
