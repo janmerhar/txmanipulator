@@ -1,5 +1,5 @@
-const { LaTeXTemplate } = require("../template/LaTeXTemplate")
-const { templateCommander } = require("../cli_args/cli_latex_template")
+import { LaTeXTemplate } from "../template/LaTeXTemplate"
+import { templateCommander } from "../cli_args/cli_latex_template"
 
 const latex = new LaTeXTemplate(templateCommander.opts().fileName)
 

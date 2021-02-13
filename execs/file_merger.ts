@@ -1,5 +1,5 @@
 const FileMerger = require("../directorizer/FileMerger")
-const { fileMergerCommander } = require("../cli_args/cli_file_merger")
+import { fileMergerCommander } from "../cli_args/cli_file_merger"
 
 // fileMergerCommander.parse(process.argv)
 // console.log("Options: \n", fileMergerCommander.opts())

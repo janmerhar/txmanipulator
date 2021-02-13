@@ -25,3 +25,4 @@ _TS
 # ignoring other compiled files
 *.csv
 *.txt
+*.exe

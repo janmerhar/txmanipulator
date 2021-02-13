@@ -1,5 +1,5 @@
-const { RegexManipulator } = require("../manipulator/RegexManipulator")
-const { regexManCommander } = require("../cli_args/cli_regex_manipulator")
+import { RegexManipulator } from "../manipulator/RegexManipulator"
+import { regexManCommander } from "../cli_args/cli_regex_manipulator"
 
 const rm = new RegexManipulator(
   regexManCommander.opts().input,

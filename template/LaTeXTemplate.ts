@@ -1,6 +1,7 @@
 import * as child_process from "child_process"
 import * as fs from "fs"
 import { templateCommander } from "../cli_args/cli_latex_template"
+import * as path from "path"
 
 class LaTeXTemplate {
   fileName: string
@@ -49,9 +50,12 @@ class LaTeXTemplate {
   // zaenkrat deluje samo odpiranje v urejevalniku
   // in še to samo kreirani dokument, želim pa ciljno mapo, da bom lažje začel urejati dokumente
   openCretedDocument(program = "code") {
-    child_process.exec(`${program} ${this.fileName}.tex`, (err: any) => {
-      if (err) console.log("Failed opening document!")
-    })
+    child_process.exec(
+      `${program} ${path.dirname(path.join(process.cwd(), this.fileName))}`,
+      (err: any) => {
+        if (err) console.log("Failed opening document!")
+      }
+    )
   }
 }
 
