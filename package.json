@@ -16,5 +16,20 @@
     "@types/dateformat": "^3.0.1",
     "@types/node": "^14.14.27",
     "node-tsc": "0.0.14"
-  }
+  },
+  "name": "LaTeX_manipulator",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/janmerhar/LaTeX_manipulator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/janmerhar/LaTeX_manipulator/issues"
+  },
+  "homepage": "https://github.com/janmerhar/LaTeX_manipulator#readme"
 }
