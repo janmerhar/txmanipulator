@@ -1,5 +1,5 @@
-const { Command } = require("commander")
-const { CommandFunctions } = require("./cli_class")
+import { Command } from "commander"
+import { CommandFunctions } from "./cli_class"
 
 const fileMergerCommander = new Command()
 

@@ -1,4 +1,4 @@
-const path = require("path")
+import * as path from "path"
 
 class CommandFunctions {
   static myParseInt(value: any, dummyPrevious: any) {

@@ -1,6 +1,6 @@
 import * as fs from "fs"
-const path = require("path")
-const PDFMerger = require("pdf-merger-js")
+import path from "path"
+import PDFMerger from "pdf-merger-js"
 
 class FileMerger {
   startingPath: string

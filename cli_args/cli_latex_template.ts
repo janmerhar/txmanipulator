@@ -1,6 +1,6 @@
-const { Command } = require("commander")
-const { CommandFunctions } = require("./cli_class")
-const dateFormat = require("dateformat")
+import { Command } from "commander"
+import { CommandFunctions } from "./cli_class"
+import dateFormat from "dateformat"
 
 // commander za create_latex_template.js
 const templateCommander = new Command()
