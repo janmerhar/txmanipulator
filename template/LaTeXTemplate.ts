@@ -15,7 +15,7 @@ class LaTeXTemplate {
   // adding elements to latex document
   // packages array of package names
   setPackages(packages: Array<string> = []) {
-    this.fileText += "\\usepackage{amsfonts}\n"
+    this.fileText += "\\usepackage{amsfonts}\n\\usepackage{amsmath, xparse}\n"
     packages = packages.map((aPackage: string) => {
       return `\\usepackage{${aPackage}}\n`
     })
