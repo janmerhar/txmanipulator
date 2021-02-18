@@ -47,9 +47,6 @@ class RegexManipulator {
 
   // RegEx ukazi
   removeEndlines() {
-    // ko se zaključi vrstica takoj po znaku \\
-    this.fileText = this.fileText.split(/\\\\\r\n/g).join("\r\n")
-    this.fileText = this.fileText.split(/\\\\\n/g).join("\n")
     // ko je še kakšen whitespace preostal
     this.fileText = this.fileText.split(/\s*\\\\\s*\r\n/g).join("\r\n")
     this.fileText = this.fileText.split(/\s*\\\\\s*\n/g).join("\n")
@@ -90,9 +87,9 @@ class RegexManipulator {
     this.fileText = this.fileText.split(/\\maketitle/).join("")
     // odstranim \begin in \end tage
     this.fileText = this.fileText
-      .split(/\\begin\{.*\}/)
+      .split(/\\begin\{document\}/)
       .join("")
-      .split(/\\end\{.*\}/)
+      .split(/\\end\{document\}/)
       .join("")
     this.fileText = this.fileText.replace("\n", "")
     // odstranim \userpackage
