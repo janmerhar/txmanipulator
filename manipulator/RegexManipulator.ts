@@ -23,26 +23,34 @@ class RegexManipulator {
     // extracting tag from \title field if tag variable is not pased as an argument
     this.tag =
       tag ||
-      this.fileText
-        .match(/\\title\{(.)*\}/gi)[0]
-        .replace("\\title{", "")
-        .replace("}", "")
-        .trim()
-        .match(/(\w)+\w+/gi)
-        .map((val: any) => {
-          if (!isNaN(val)) {
-            return `-${val}`
-          } else {
-            return val.charAt(0).toUpperCase()
-          }
-        })
-        .join("")
+      this.prepareTag(
+        this.fileText
+          .match(/\\title\{(.)*\}/gi)[0]
+          .replace("\\title{", "")
+          .replace("}", "")
+          .trim()
+      )
   }
   getFileText() {
     return this.fileText
   }
   getFilePath() {
     return this.filePath
+  }
+
+  prepareTex() {
+    this.fileText = this.fileText.split(/\n{3,}/g).join("\n\n")
+    this.fileText = this.fileText.split(/(\r\n){3,}/g).join("\r\n\r\n")
+  }
+
+  prepareTag(fileName: string) {
+    let words = fileName.split(" ")
+    const num = words[words.length - 1]
+    words.length -= 1
+    words = words.map((word) => word.charAt(0))
+
+    const nameOfSubject = words.join("").toUpperCase()
+    return `${nameOfSubject}-${num}`
   }
 
   // RegEx ukazi
@@ -69,7 +77,7 @@ class RegexManipulator {
   }
 
   removeTabs() {
-    this.fileText = this.fileText.split(/[ ]{4,}/g).join("")
+    this.fileText = this.fileText.split(/[ ]{4}/g).join("")
   }
 
   removeLaTeX() {
@@ -102,19 +110,19 @@ class RegexManipulator {
 
     // odprem datoteko s notepad++ ali notepad ali
     child_process.exec(
-      `start notepad++ ${writePath}.${writeExtension}`,
+      `start notepad++ ${writePath}.${writeExtension} &`,
       (err: any) => {
         if (!err) return
         child_process.exec(
-          `start notepad ${writePath}.${writeExtension}`,
+          `start notepad ${writePath}.${writeExtension} &`,
           (err: any) => {
             if (!err) return
             child_process.exec(
-              `start kate ${writePath}.${writeExtension}`,
+              `start kate ${writePath}.${writeExtension} &`,
               (err: any) => {
                 if (!err) return
                 child_process.exec(
-                  `start gedit ${writePath}.${writeExtension}`,
+                  `start gedit ${writePath}.${writeExtension} &`,
                   (error: any) => {
                     console.log(error)
                   }
@@ -135,13 +143,16 @@ class RegexManipulator {
     // splitting document into lines
     const lines = this.fileText.split(/\r*\n/g)
     // creating an array of indexes
-    const questions = lines.filter((value: string, index: number) => {
-      let niz = String(lines[index + 1])
-      if (niz.match(/----+/)) {
-        return index
-      }
-    })
-
+    const questions = [
+      lines[0],
+      ...lines.filter((value: string, index: number) => {
+        let niz = String(lines[index + 1])
+        if (niz.match(/----+/)) {
+          return index
+        }
+      }),
+    ]
+    console.log(questions)
     // loopping through every question
     for (let i = 0; i < questions.length; i++) {
       let iQuestion = lines.indexOf(questions[i])
@@ -181,7 +192,7 @@ class RegexManipulator {
           fs.writeFileSync(writePath + "." + writeExtension, csvToWrite)
           // opening Anki desktop application with a prompt for inporting current CSV file
           // Anki should be running before we can pass CLI parameter for import
-          child_process.exec(`anki`, (err: any) => {})
+          child_process.exec(`anki &`, (err: any) => {})
           child_process.exec(`anki ${writePath + "." + writeExtension}`)
         }
       }
