@@ -4,7 +4,8 @@ import { regexManCommander } from "../cli_args/cli_regex_manipulator"
 const rm = new RegexManipulator(
   regexManCommander.opts().input,
   regexManCommander.opts().fileName,
-  regexManCommander.opts().ankiTag
+  regexManCommander.opts().ankiTag,
+  regexManCommander.opts().run
 )
 
 rm.removeEndlines()

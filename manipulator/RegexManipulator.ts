@@ -2,10 +2,6 @@ import * as fs from "fs"
 import * as child_process from "child_process"
 import csvStringify from "csv-stringify"
 import * as path from "path"
-/*
-  dodaj še polje za tag v array za csv
-  dodaj še zaznavo imena za tage: spremeni tudi CLI vnose
- */
 
 class RegexManipulator {
   filePath: any
@@ -13,8 +9,14 @@ class RegexManipulator {
   fileName: string
   csvData: any
   tag: any
+  runPrograms: number
 
-  constructor(filePath: string, fileName: string, tag: any) {
+  constructor(
+    filePath: string,
+    fileName: string,
+    tag: any,
+    runPrograms: number = 0
+  ) {
     this.filePath = filePath
     this.fileText = fs.readFileSync(filePath, "utf-8")
     this.fileName =
@@ -30,6 +32,7 @@ class RegexManipulator {
           .replace("}", "")
           .trim()
       )
+    this.runPrograms = runPrograms
   }
   getFileText() {
     return this.fileText
@@ -55,7 +58,7 @@ class RegexManipulator {
 
   // RegEx ukazi
   removeEndlines() {
-    // ko je še kakšen whitespace preostal
+    // cleaning reamaining endlines
     this.fileText = this.fileText.split(/\s*\\\\\s*\r\n/g).join("\r\n")
     this.fileText = this.fileText.split(/\s*\\\\\s*\n/g).join("\n")
   }
@@ -64,6 +67,8 @@ class RegexManipulator {
     this.fileText = this.fileText.replace(
       /\\section\*\{(.*)\}/g,
       function (a: string, b: string) {
+        // checking if the \section*{} is empty
+        if (b.match(/\w+/) == null) return ""
         return `\n\n${b.trim()}\n--------------------------------`
       }
     )
@@ -106,39 +111,52 @@ class RegexManipulator {
 
   writeToFile(writePath = this.fileName, writeExtension = "txt") {
     fs.writeFileSync(writePath + "." + writeExtension, this.fileText)
-    console.log("Written to: " + writePath + "." + writeExtension)
+    // console.log("Written to: " + writePath + "." + writeExtension)
 
     // odprem datoteko s notepad++ ali notepad ali
-    child_process.exec(
-      `start notepad++ ${writePath}.${writeExtension} &`,
-      (err: any) => {
-        if (!err) return
-        child_process.exec(
-          `start notepad ${writePath}.${writeExtension} &`,
-          (err: any) => {
-            if (!err) return
-            child_process.exec(
-              `start kate ${writePath}.${writeExtension} &`,
-              (err: any) => {
-                if (!err) return
-                child_process.exec(
-                  `start gedit ${writePath}.${writeExtension} &`,
-                  (error: any) => {
-                    console.log(error)
-                  }
-                )
-              }
-            )
-          }
-        )
-      }
-    )
+    if (this.runPrograms == 1) {
+      child_process.exec(
+        `start notepad++ ${writePath}.${writeExtension} &`,
+        (err: any) => {
+          if (!err) return
+          child_process.exec(
+            `start notepad ${writePath}.${writeExtension} &`,
+            (err: any) => {
+              if (!err) return
+              child_process.exec(
+                `start kate ${writePath}.${writeExtension} &`,
+                (err: any) => {
+                  if (!err) return
+                  child_process.exec(
+                    `start gedit ${writePath}.${writeExtension} &`,
+                    (error: any) => {
+                      console.log(error)
+                    }
+                  )
+                }
+              )
+            }
+          )
+        }
+      )
+    }
   }
 
   /*
    * Del namenjen za
    * CSV kalkulacije
    */
+
+  clozeDetection(text: string, counter: number) {
+    let clozedText = text.replace(/\{\{(.)*\}\}/g, (a, b) => {
+      a = a.replace(/[\{\}]/g, "")
+      const output = `{{c${counter}::${a}}}`
+      counter += 1
+      return output
+    })
+    return clozedText
+  }
+
   fillCsvData() {
     // splitting document into lines
     const lines = this.fileText.split(/\r*\n/g)
@@ -152,7 +170,7 @@ class RegexManipulator {
         }
       }),
     ]
-    console.log(questions)
+    // console.log(questions)
     // loopping through every question
     for (let i = 0; i < questions.length; i++) {
       let iQuestion = lines.indexOf(questions[i])
@@ -175,6 +193,8 @@ class RegexManipulator {
               : ""
           )
       }
+      // console.log(this.clozeDetection(questionAnswers[1], 1))
+      questionAnswers[1] = this.clozeDetection(questionAnswers[1], 1)
       this.csvData.push(questionAnswers)
     }
   }
@@ -192,8 +212,10 @@ class RegexManipulator {
           fs.writeFileSync(writePath + "." + writeExtension, csvToWrite)
           // opening Anki desktop application with a prompt for inporting current CSV file
           // Anki should be running before we can pass CLI parameter for import
-          child_process.exec(`anki &`, (err: any) => {})
-          child_process.exec(`anki ${writePath + "." + writeExtension}`)
+          if (this.runPrograms == 1) {
+            child_process.exec(`anki &`, (err: any) => {})
+            child_process.exec(`anki ${writePath + "." + writeExtension}`)
+          }
         }
       }
     )

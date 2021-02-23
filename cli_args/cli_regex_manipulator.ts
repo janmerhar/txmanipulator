@@ -28,6 +28,11 @@ regexManCommander
     "name of the output file",
     CommandFunctions.fileWithoutExtension
   )
+  .option(
+    "-r, --run <number>",
+    "1 => runs manipulated data in program,  0 => doesn't run",
+    "1"
+  )
 
 regexManCommander.parse()
 // console.log(regexManCommander.opts())

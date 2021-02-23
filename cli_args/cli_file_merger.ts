@@ -10,7 +10,7 @@ const fileMergerCommander = new Command()
 // i may add support for other types than PDF
 fileMergerCommander
   .requiredOption(
-    "-ip, --input-path <string>",
+    "-i, --input-path <string>",
     "directory path that will be analyzed"
   )
   .requiredOption(
