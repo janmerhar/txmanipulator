@@ -15,7 +15,8 @@ class LaTeXTemplate {
   // adding elements to latex document
   // packages array of package names
   setPackages(packages: Array<string> = []) {
-    this.fileText += "\\usepackage{amsfonts}\n\\usepackage{amsmath, xparse}\n"
+    this.fileText +=
+      "\\usepackage{amsfonts, amsmath, amssymb}\n\\usepackage{xparse}\n"
     packages = packages.map((aPackage: string) => {
       return `\\usepackage{${aPackage}}\n`
     })
@@ -33,7 +34,7 @@ class LaTeXTemplate {
     this.fileText += `\\maketitle\n`
   }
 
-  setSections(number = 20) {
+  setSections(number = 30) {
     this.fileText += `    \\section*{  }\n\n`.repeat(number)
   }
 

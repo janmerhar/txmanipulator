@@ -64,12 +64,14 @@ class RegexManipulator {
   }
 
   removeSections() {
+    // cleaning extra \n before \section tag
+    // this.fileText = this.fileText.split(/\n{3,}\\section/).join(/\n\n\\section/)
     this.fileText = this.fileText.replace(
-      /\\section\*\{(.*)\}/g,
+      /\r*\n+\\section\*\{(.*)\}/g,
       function (a: string, b: string) {
         // checking if the \section*{} is empty
         if (b.match(/\w+/) == null) return ""
-        return `\n\n${b.trim()}\n--------------------------------`
+        return `\n\n\n${b.trim()}\n--------------------------------`
       }
     )
   }
