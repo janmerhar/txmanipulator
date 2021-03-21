@@ -87,6 +87,21 @@ class RegexManipulator {
     this.fileText = this.fileText.split(/[ ]{4}/g).join("")
   }
 
+  replaceMathExpression(text: string) {
+    let fileText = (" " + text).slice(1)
+    fileText = fileText
+      .split(/\\\(\s*/)
+      .join("$ ")
+      .split(/\s*\\\)/)
+      .join(" $")
+    fileText = fileText
+      .split(/\\\[\s*/)
+      .join("$$ ")
+      .split(/\s*\\\]/)
+      .join(" $$")
+    return fileText
+  }
+
   removeLaTeX() {
     // odstranim \documentclass
     this.fileText = this.fileText.split(/\\documentclass\{.*\}/).join("")
@@ -112,7 +127,10 @@ class RegexManipulator {
   }
 
   writeToFile(writePath = this.fileName, writeExtension = "txt") {
-    fs.writeFileSync(writePath + "." + writeExtension, this.fileText)
+    fs.writeFileSync(
+      writePath + "." + writeExtension,
+      this.replaceMathExpression(this.fileText)
+    )
     // console.log("Written to: " + writePath + "." + writeExtension)
 
     // odprem datoteko s notepad++ ali notepad ali
