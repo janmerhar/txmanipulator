@@ -10,6 +10,7 @@ class RegexManipulator {
   csvData: any
   tag: any
   runPrograms: number
+  fileTitle: string
 
   constructor(
     filePath: string,
@@ -23,6 +24,7 @@ class RegexManipulator {
       fileName || path.basename(filePath).replace(path.extname(filePath), "")
     this.csvData = []
     // extracting tag from \title field if tag variable is not pased as an argument
+    /* tebe lahko še uporabim za pridobivljanje TITLE, ki ga bom potreboval na vrhu strani .md datoteke
     this.tag =
       tag ||
       this.prepareTag(
@@ -32,6 +34,17 @@ class RegexManipulator {
           .replace("}", "")
           .trim()
       )
+      */
+    const fileNameSplitted = this.fileName.split("_")
+    this.tag =
+      tag || fileNameSplitted.length == 3
+        ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
+        : ""
+    this.fileTitle = this.fileText
+      .match(/\\title\{(.)*\}/gi)[0]
+      .replace("\\title{", "")
+      .replace("}", "")
+      .trim()
     this.runPrograms = runPrograms
   }
   getFileText() {
@@ -87,18 +100,35 @@ class RegexManipulator {
     this.fileText = this.fileText.split(/[ ]{4}/g).join("")
   }
 
-  replaceMathExpression(text: string) {
+  // dodaj funkcionalnost, da vse math expressione spremmeni v $$ $$ saj le te podpira obsidian
+  replaceMathExpression(text: string, isVaried: boolean) {
     let fileText = (" " + text).slice(1)
-    fileText = fileText
-      .split(/\\\(\s*/)
-      .join("$ ")
-      .split(/\s*\\\)/)
-      .join(" $")
-    fileText = fileText
-      .split(/\\\[\s*/)
-      .join("$$ ")
-      .split(/\s*\\\]/)
-      .join(" $$")
+    if (isVaried) {
+      // option for inline and multiline math => not obsidian friendly
+      fileText = fileText
+        .split(/\\\(\s*/)
+        .join("$ ")
+        .split(/\s*\\\)/)
+        .join(" $")
+      fileText = fileText
+        .split(/\\\[\s*/)
+        .join("$$ ")
+        .split(/\s*\\\]/)
+        .join(" $$")
+    } else {
+      // option for multiline only => obsidian friendly
+      fileText = fileText
+        .split(/\\\(\s*/)
+        .join("$$ ")
+        .split(/\s*\\\)/)
+        .join(" $$")
+      fileText = fileText
+        .split(/\\\[\s*/)
+        .join("$$ ")
+        .split(/\s*\\\]/)
+        .join(" $$")
+    }
+
     return fileText
   }
 
@@ -126,12 +156,22 @@ class RegexManipulator {
     this.fileText = this.fileText.split(/\\usepackage\{.*\}(\n)*/).join("")
   }
 
-  writeToFile(writePath = this.fileName, writeExtension = "txt") {
+  // funkcija, v katero bom zaenkrat zakakiral vse dodane funkcionalnosti
+  // dokler ne bom naredil drugega ločenega razreda za md datoteke
+  prepareMd(text: string) {
+    // adding master # for title that is extracted from -t flag
+    let fileText = `# ${this.fileTitle}\n${text}`
+    // fixing math expressions
+    fileText = this.replaceMathExpression(fileText, true)
+
+    return fileText
+  }
+
+  writeToFile(writePath = this.fileName, writeExtension = "md") {
     fs.writeFileSync(
       writePath + "." + writeExtension,
-      this.replaceMathExpression(this.fileText)
+      this.prepareMd(this.fileText)
     )
-    // console.log("Written to: " + writePath + "." + writeExtension)
 
     // odprem datoteko s notepad++ ali notepad ali
     if (this.runPrograms == 1) {
