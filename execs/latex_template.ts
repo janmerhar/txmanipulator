@@ -12,4 +12,4 @@ latex.setTitleData(
 latex.setBeginDocument()
 latex.setSections(templateCommander.opts().sections)
 latex.writeToFile()
-latex.openCretedDocument()
+latex.openCreatedDocument()

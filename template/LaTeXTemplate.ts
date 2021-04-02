@@ -50,11 +50,20 @@ class LaTeXTemplate {
   // dokončaj, da se bo odprla mapa, kjer bo shranjen LaTeX dokument
   // zaenkrat deluje samo odpiranje v urejevalniku
   // in še to samo kreirani dokument, želim pa ciljno mapo, da bom lažje začel urejati dokumente
-  openCretedDocument(program = "code") {
+  openCreatedDocument(program = "code") {
     child_process.exec(
       `${program} ${path.dirname(path.join(process.cwd(), this.fileName))}`,
       (err: any) => {
         if (err) console.log("Failed opening document!")
+        child_process.exec(
+          `${program} ${path.join(
+            path.dirname(path.join(process.cwd(), this.fileName)),
+            this.fileName + "." + "tex"
+          )}`,
+          (err: any) => {
+            if (err) console.log("Failed opening document!")
+          }
+        )
       }
     )
   }
