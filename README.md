@@ -30,14 +30,25 @@ To get started you need installed Node.js LTS 14.x or later alongsite other tool
 
 - Node.js LTS 14.x or later
 - TypeScript
+
+## Installation
+
+1) Install Node.js
+2) Clone the repo
 ```bash
-npm install typescript --save-dev
+git clone https://github.com/janmerhar/LaTeX_manipulator
 ```
-- other NPM packages
+3) Install NPM packages
 ```bash
 npm install
 ```
-
-## Installation
+4) Install TypeScript
+```bash
+npm install typescript
+```
+5) Run TypeScript compiler
+```bash
+tsc -w
+```
 
 # Usage
