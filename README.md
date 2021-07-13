@@ -18,9 +18,25 @@ Command line interface that transforms LaTeX document into markdown and csv file
 
 ## Built with
 
+- Node.js
+- TypeScript
+- commander.js
+
 # Getting started
 
+To get started you need installed Node.js LTS 14.x or later alongsite other tools.
+
 # Prerequisites
+
+- Node.js LTS 14.x or later
+- TypeScript
+```bash
+npm install typescript --save-dev
+```
+- other NPM packages
+```bash
+npm install
+```
 
 ## Installation
 
