@@ -53,7 +53,7 @@ tsc -w
 
 # Usage
 
-Scripts are located in ```execs``` folder. You can run them with ```node```. Note, you need to comple TypeScript before you can run them.
+Scripts are located in ```execs``` folder. You can run them with ```node```. Note, you need to compile TypeScript into JavaScript before you can run them.
 
 ## File Merger CLI 
 
@@ -66,7 +66,6 @@ Options:
                                   "pdf")
   -ofr, --output-format <string>  Format of the merged file (default: "pdf")
   -h, --help                      display help for command
-
 ```
 
 ## LaTeX Template CLI
@@ -82,7 +81,6 @@ Options:
   -p, --packages <strings...>   packages added to \usepackage
   -s, --sections <number>       Number of sections in the document
   -h, --help                    display help for command
-
 ```
 
 
@@ -101,7 +99,6 @@ Options:
   -r, --run <number>             1 => runs manipulated data in program,  0 =>
                                  doesn't run (default: "1")
   -h, --help                     display help for command
-
 ```
 
 
