@@ -57,11 +57,52 @@ Scripts are located in ```execs``` folder. You can run them with ```node```. Not
 
 ## File Merger CLI 
 
+```
+Usage: file_merger [options]
+
+Options:
+  -i, --input-path <string>       Directory path that will be analyzed
+  -ifr, --input-format <string>   Format of files we search for (default:
+                                  "pdf")
+  -ofr, --output-format <string>  Format of the merged file (default: "pdf")
+  -h, --help                      display help for command
+
+```
 
 ## LaTeX Template CLI
 
+```
+Usage: latex_template [options]
 
-## Regex Mnaipualtor CLI
+Options:
+  -f, --file-name <strings...>  Name of the LaTeX output file
+  -t, --title <string...>       Title given by the user
+  -d, date <strings...>         Date given by the user (default: "2021-07-16")
+  -a, --author <strings...>     Authors(s) (default: "")
+  -p, --packages <strings...>   packages added to \usepackage
+  -s, --sections <number>       Number of sections in the document
+  -h, --help                    display help for command
+
+```
+
+
+## Regex Manipulator CLI
+
+```
+Usage: regex_manipulator [options]
+
+Options:
+  -i, --input <string>           Filename that will be imported
+  -tof, --type-of-file <number>  1 => txt file, 2 => csv file, 3 => txt and csv
+                                 file (default: "3")
+  -at, --anki-tag <string>       Input tag field value for imported document:
+                                 eg. OMA-13
+  -f, --file-name <string>       Name of the output file
+  -r, --run <number>             1 => runs manipulated data in program,  0 =>
+                                 doesn't run (default: "1")
+  -h, --help                     display help for command
+
+```
 
 
 

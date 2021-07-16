@@ -1,0 +1,12 @@
+Usage: regex_manipulator [options]
+
+Options:
+  -i, --input <string>           Filename that will be imported
+  -tof, --type-of-file <number>  1 => txt file, 2 => csv file, 3 => txt and csv
+                                 file (default: "3")
+  -at, --anki-tag <string>       Input tag field value for imported document:
+                                 eg. OMA-13
+  -f, --file-name <string>       Name of the output file
+  -r, --run <number>             1 => runs manipulated data in program,  0 =>
+                                 doesn't run (default: "1")
+  -h, --help                     display help for command
