@@ -53,4 +53,15 @@ tsc -w
 
 # Usage
 
-## CLI arguments
+Scripts are located in ```execs``` folder. You can run them with ```node```. Note, you need to comple TypeScript before you can run them.
+
+## File Merger CLI 
+
+
+## LaTeX Template CLI
+
+
+## Regex Mnaipualtor CLI
+
+
+

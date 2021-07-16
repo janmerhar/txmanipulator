@@ -9,12 +9,12 @@ const templateCommander = new Command()
 templateCommander
   .requiredOption(
     "-f, --file-name <strings...>",
-    "name of the LaTeX output file",
+    "Name of the LaTeX output file",
     CommandFunctions.fileWithoutExtension
   )
   .requiredOption(
     "-t, --title <string...>",
-    "title given by the user",
+    "Title given by the user",
     CommandFunctions.joinThings
   )
 
@@ -23,20 +23,20 @@ templateCommander
 templateCommander
   .option(
     "-d, date <strings...>",
-    "date given by the user",
+    "Date given by the user",
     CommandFunctions.joinThings,
     dateFormat(new Date(), "yyyy-mm-dd")
   )
   .option(
     "-a, --author <strings...>",
-    "authors name(s)",
+    "Authors(s)",
     CommandFunctions.joinThings,
     ""
   )
   .option("-p, --packages <strings...>", "packages added to \\usepackage")
   .option(
     "-s, --sections <number>",
-    "number of sections in the document",
+    "Number of sections in the document",
     CommandFunctions.myParseInt
   )
 

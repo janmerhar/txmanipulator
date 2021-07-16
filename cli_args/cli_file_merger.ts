@@ -11,17 +11,17 @@ const fileMergerCommander = new Command()
 fileMergerCommander
   .requiredOption(
     "-i, --input-path <string>",
-    "directory path that will be analyzed"
+    "Directory path that will be analyzed"
   )
   .requiredOption(
     "-ifr, --input-format <string>",
-    "format of files we search for",
+    "Format of files we search for",
     CommandFunctions.lowerCase,
     "pdf"
   )
   .requiredOption(
     "-ofr, --output-format <string>",
-    "format of the merged file",
+    "Format of the merged file",
     CommandFunctions.lowerCase,
     "pdf"
   )
