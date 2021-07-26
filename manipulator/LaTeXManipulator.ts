@@ -6,7 +6,6 @@ class LaTeXManipulator {
   filePath: any
   fileText: any
   fileName: string
-  csvData: any
   tag: any
   runPrograms: number
   fileTitle: string
@@ -21,7 +20,6 @@ class LaTeXManipulator {
     this.fileText = fs.readFileSync(filePath, "utf-8")
     this.fileName =
       fileName || path.basename(filePath).replace(path.extname(filePath), "")
-    this.csvData = []
 
     const fileNameSplitted = this.fileName.split("_")
     this.tag =
@@ -113,34 +111,23 @@ class LaTeXManipulator {
   }
 
   writeToFile(writePath = this.fileName, writeExtension = "md") {
-    fs.writeFileSync(writePath + "." + writeExtension, this.fileText)
+    let writtenFile = "LOG_" + writePath + "." + writeExtension
+    fs.writeFileSync(writtenFile, this.fileText)
 
     // odprem datoteko s notepad++ ali notepad ali
     if (this.runPrograms == 1) {
-      child_process.exec(
-        `start notepad++ ${writePath}.${writeExtension} &`,
-        (err: any) => {
+      child_process.exec(`start notepad++ ${writtenFile} &`, (err: any) => {
+        if (!err) return
+        child_process.exec(`start notepad ${writtenFile} &`, (err: any) => {
           if (!err) return
-          child_process.exec(
-            `start notepad ${writePath}.${writeExtension} &`,
-            (err: any) => {
-              if (!err) return
-              child_process.exec(
-                `start kate ${writePath}.${writeExtension} &`,
-                (err: any) => {
-                  if (!err) return
-                  child_process.exec(
-                    `start gedit ${writePath}.${writeExtension} &`,
-                    (error: any) => {
-                      console.log(error)
-                    }
-                  )
-                }
-              )
-            }
-          )
-        }
-      )
+          child_process.exec(`start kate ${writtenFile} &`, (err: any) => {
+            if (!err) return
+            child_process.exec(`start gedit ${writtenFile} &`, (error: any) => {
+              console.log(error)
+            })
+          })
+        })
+      })
     }
   }
 }
