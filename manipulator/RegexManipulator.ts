@@ -23,18 +23,7 @@ class RegexManipulator {
     this.fileName =
       fileName || path.basename(filePath).replace(path.extname(filePath), "")
     this.csvData = []
-    // extracting tag from \title field if tag variable is not pased as an argument
-    /* tebe lahko še uporabim za pridobivljanje TITLE, ki ga bom potreboval na vrhu strani .md datoteke
-    this.tag =
-      tag ||
-      this.prepareTag(
-        this.fileText
-          .match(/\\title\{(.)*\}/gi)[0]
-          .replace("\\title{", "")
-          .replace("}", "")
-          .trim()
-      )
-      */
+
     const fileNameSplitted = this.fileName.split("_")
     this.tag =
       tag || fileNameSplitted.length == 3
@@ -161,8 +150,10 @@ class RegexManipulator {
   prepareMd(text: string) {
     // adding master # for title that is extracted from -t flag
     let fileText = `# ${this.fileTitle}\n${text}`
+
     // fixing math expressions
-    fileText = this.replaceMathExpression(fileText, true)
+    // not needed for now
+    // fileText = this.replaceMathExpression(fileText, true)
 
     return fileText
   }
@@ -254,10 +245,85 @@ class RegexManipulator {
           )
       }
       // console.log(this.clozeDetection(questionAnswers[1], 1))
-      questionAnswers[1] = this.clozeDetection(questionAnswers[1], 1)
+
+      // not usefull for now
+      // questionAnswers[1] = this.clozeDetection(questionAnswers[1], 1)
       this.csvData.push(questionAnswers)
     }
   }
+  /* 
+    IMPROVED VERSION OF fillCsvData
+  */
+  fillCsvData2() {
+    // splitting document into lines
+    const lines = this.fileText.split(/\r*\n/g)
+    // creating an array of indexes
+    const questions = [
+      lines[0],
+      ...lines.filter((value: string, index: number) => {
+        let niz = String(lines[index + 1])
+        if (niz.match(/----+/)) {
+          return index
+        }
+      }),
+    ]
+    // console.log(questions)
+    // loopping through every question
+
+    // searching for indexes of questions
+    let iQuestions: any[] = []
+    questions.forEach((question, index) => {
+      iQuestions.push(lines.indexOf(question))
+    })
+    // console.log(iQuestions.length)
+    /*
+      GAINING ANSWERS TO ADD TO QUESTION
+    */
+    iQuestions.forEach((question, index) => {
+      // reading current question
+      let questionText = questions[question]
+
+      // iščem konec odgovora
+      // pri tem moram paziti na zadnji odgovor
+
+      // ni zadnji index
+      let iStart = iQuestions[index] + 1 + 1
+      let iEnd = iQuestions[index + 1] || lines.length
+      let questionAnswers = [
+        String(lines[question]),
+        lines.slice(iStart, iEnd).join(""),
+        this.tag,
+      ]
+      console.log(questionAnswers)
+    })
+
+    for (let i = 0; i < questions.length; i++) {
+      let iQuestion = lines.indexOf(questions[i])
+      let iNextQuestion =
+        i + 1 < questions.length
+          ? lines.indexOf(questions[i + 1])
+          : lines.length - 1
+
+      let questionAnswers = [String(lines[iQuestion]), "", this.tag]
+      for (
+        let j = iQuestion + 1 + 1;
+        j < iNextQuestion && String(lines[j]).length != 0;
+        j++
+      ) {
+        questionAnswers[1] += String(lines[j])
+          .trim()
+          .concat(
+            j + 1 < iNextQuestion && String(lines[j + 1]).length != 0
+              ? "\n"
+              : ""
+          )
+      }
+      // not usefull for now
+      // questionAnswers[1] = this.clozeDetection(questionAnswers[1], 1)
+      this.csvData.push(questionAnswers)
+    }
+  }
+
   csvWriteToFile(writePath = this.fileName, writeExtension = "csv") {
     csvStringify(
       this.randomizeArray(this.csvData),

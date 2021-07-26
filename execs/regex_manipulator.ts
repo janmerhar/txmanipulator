@@ -20,6 +20,6 @@ if (typeOfFile == 1 || typeOfFile == 3) {
 }
 
 if (typeOfFile == 2 || typeOfFile == 3) {
-  rm.fillCsvData()
+  rm.fillCsvData2()
   rm.csvWriteToFile()
 }
