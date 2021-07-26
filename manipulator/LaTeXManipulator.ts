@@ -39,6 +39,12 @@ class LaTeXManipulator {
   getFilePath() {
     return this.filePath
   }
+  getFileName() {
+    return this.fileName
+  }
+  getTagName() {
+    return this.tag
+  }
 
   prepareTex() {
     this.fileText = this.fileText.split(/\n{3,}/g).join("\n\n")
@@ -108,6 +114,14 @@ class LaTeXManipulator {
     this.fileText = this.fileText.replace("\n", "")
     // odstranim \userpackage
     this.fileText = this.fileText.split(/\\usepackage\{.*\}(\n)*/).join("")
+  }
+  prepareMd() {
+    // adding master # for title that is extracted from -t flag
+    this.fileText = `# ${this.fileTitle}\n\n${this.fileText}`
+
+    // fixing math expressions
+    // not needed for now
+    // fileText = this.replaceMathExpression(fileText, true)
   }
 
   writeToFile(writePath = this.fileName, writeExtension = "md") {

@@ -10,31 +10,37 @@ class MDManipulator {
   csvData: any
   tag: any
   runPrograms: number
-  fileTitle: string
 
   constructor(
     filePath: string,
     fileName: string,
     tag: any,
-    runPrograms: number = 0
+    runPrograms: number = 0,
+    fileText: string = ""
   ) {
-    this.filePath = filePath
-    this.fileText = fs.readFileSync(filePath, "utf-8")
-    this.fileName =
-      fileName || path.basename(filePath).replace(path.extname(filePath), "")
     this.csvData = []
-
-    const fileNameSplitted = this.fileName.split("_")
-    this.tag =
-      tag || fileNameSplitted.length == 3
-        ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
-        : ""
-    this.fileTitle = this.fileText
-      .match(/\\title\{(.)*\}/gi)[0]
-      .replace("\\title{", "")
-      .replace("}", "")
-      .trim()
     this.runPrograms = runPrograms
+    // when input text is from LaTeXManipulator class
+    if (fileText != "") {
+      this.filePath = filePath
+      this.fileName = fileName
+      this.tag = tag
+      this.runPrograms = runPrograms
+      this.fileText = fileText
+    }
+    // when there is no input String for fileText
+    else {
+      this.filePath = filePath
+      this.fileText = fs.readFileSync(filePath, "utf-8")
+      this.fileName =
+        fileName || path.basename(filePath).replace(path.extname(filePath), "")
+
+      const fileNameSplitted = this.fileName.split("_")
+      this.tag =
+        tag || fileNameSplitted.length == 3
+          ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
+          : ""
+    }
   }
 
   replaceMathExpression(text: string, isVaried: boolean) {
@@ -64,19 +70,6 @@ class MDManipulator {
         .split(/\s*\\\]/)
         .join(" $$")
     }
-
-    return fileText
-  }
-
-  // funkcija, v katero bom zaenkrat zakakiral vse dodane funkcionalnosti
-  // dokler ne bom naredil drugega ločenega razreda za md datoteke
-  prepareMd(text: string) {
-    // adding master # for title that is extracted from -t flag
-    let fileText = `# ${this.fileTitle}\n${text}`
-
-    // fixing math expressions
-    // not needed for now
-    // fileText = this.replaceMathExpression(fileText, true)
 
     return fileText
   }
