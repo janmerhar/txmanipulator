@@ -10,6 +10,7 @@ class RegexManipulator {
   csvData: any
   tag: any
   runPrograms: number
+  fileTitle: string
 
   constructor(
     filePath: string,
@@ -23,6 +24,7 @@ class RegexManipulator {
       fileName || path.basename(filePath).replace(path.extname(filePath), "")
     this.csvData = []
     // extracting tag from \title field if tag variable is not pased as an argument
+    /* tebe lahko še uporabim za pridobivljanje TITLE, ki ga bom potreboval na vrhu strani .md datoteke
     this.tag =
       tag ||
       this.prepareTag(
@@ -32,6 +34,17 @@ class RegexManipulator {
           .replace("}", "")
           .trim()
       )
+      */
+    const fileNameSplitted = this.fileName.split("_")
+    this.tag =
+      tag || fileNameSplitted.length == 3
+        ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
+        : ""
+    this.fileTitle = this.fileText
+      .match(/\\title\{(.)*\}/gi)[0]
+      .replace("\\title{", "")
+      .replace("}", "")
+      .trim()
     this.runPrograms = runPrograms
   }
   getFileText() {
@@ -64,12 +77,14 @@ class RegexManipulator {
   }
 
   removeSections() {
+    // cleaning extra \n before \section tag
+    // this.fileText = this.fileText.split(/\n{3,}\\section/).join(/\n\n\\section/)
     this.fileText = this.fileText.replace(
-      /\\section\*\{(.*)\}/g,
+      /\r*\n+\\section\*\{(.*)\}/g,
       function (a: string, b: string) {
         // checking if the \section*{} is empty
         if (b.match(/\w+/) == null) return ""
-        return `\n\n${b.trim()}\n--------------------------------`
+        return `\n\n\n${b.trim()}\n--------------------------------`
       }
     )
   }
@@ -83,6 +98,38 @@ class RegexManipulator {
 
   removeTabs() {
     this.fileText = this.fileText.split(/[ ]{4}/g).join("")
+  }
+
+  // dodaj funkcionalnost, da vse math expressione spremmeni v $$ $$ saj le te podpira obsidian
+  replaceMathExpression(text: string, isVaried: boolean) {
+    let fileText = (" " + text).slice(1)
+    if (isVaried) {
+      // option for inline and multiline math => not obsidian friendly
+      fileText = fileText
+        .split(/\\\(\s*/)
+        .join("$ ")
+        .split(/\s*\\\)/)
+        .join(" $")
+      fileText = fileText
+        .split(/\\\[\s*/)
+        .join("$$ ")
+        .split(/\s*\\\]/)
+        .join(" $$")
+    } else {
+      // option for multiline only => obsidian friendly
+      fileText = fileText
+        .split(/\\\(\s*/)
+        .join("$$ ")
+        .split(/\s*\\\)/)
+        .join(" $$")
+      fileText = fileText
+        .split(/\\\[\s*/)
+        .join("$$ ")
+        .split(/\s*\\\]/)
+        .join(" $$")
+    }
+
+    return fileText
   }
 
   removeLaTeX() {
@@ -109,9 +156,22 @@ class RegexManipulator {
     this.fileText = this.fileText.split(/\\usepackage\{.*\}(\n)*/).join("")
   }
 
-  writeToFile(writePath = this.fileName, writeExtension = "txt") {
-    fs.writeFileSync(writePath + "." + writeExtension, this.fileText)
-    // console.log("Written to: " + writePath + "." + writeExtension)
+  // funkcija, v katero bom zaenkrat zakakiral vse dodane funkcionalnosti
+  // dokler ne bom naredil drugega ločenega razreda za md datoteke
+  prepareMd(text: string) {
+    // adding master # for title that is extracted from -t flag
+    let fileText = `# ${this.fileTitle}\n${text}`
+    // fixing math expressions
+    fileText = this.replaceMathExpression(fileText, true)
+
+    return fileText
+  }
+
+  writeToFile(writePath = this.fileName, writeExtension = "md") {
+    fs.writeFileSync(
+      writePath + "." + writeExtension,
+      this.prepareMd(this.fileText)
+    )
 
     // odprem datoteko s notepad++ ali notepad ali
     if (this.runPrograms == 1) {
@@ -200,7 +260,7 @@ class RegexManipulator {
   }
   csvWriteToFile(writePath = this.fileName, writeExtension = "csv") {
     csvStringify(
-      this.csvData,
+      this.randomizeArray(this.csvData),
       {
         header: false,
         delimiter: ";",
@@ -219,6 +279,16 @@ class RegexManipulator {
         }
       }
     )
+  }
+  randomizeArray(inputArray: [any]) {
+    let array = [...inputArray]
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * i)
+      const temp = array[i]
+      array[i] = array[j]
+      array[j] = temp
+    }
+    return array
   }
 }
 
