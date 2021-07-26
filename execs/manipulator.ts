@@ -39,9 +39,12 @@ if (path.extname(manipulatorManCommander.opts().input) == ".tex") {
   // in to raje naredim v MDManipulator
   // tex.prepareMd()
 
-  // optional
-  // need to reimplement --type-of-file CLI arg
-  tex.writeToFile()
+  if (
+    manipulatorManCommander.opts().typeOfFile == 1 ||
+    manipulatorManCommander.opts().typeOfFile == 3
+  ) {
+    tex.writeToFile()
+  }
 
   const md = new MDManipulator(
     manipulatorManCommander.opts().input,
@@ -51,7 +54,12 @@ if (path.extname(manipulatorManCommander.opts().input) == ".tex") {
     tex.getFileText()
   )
   md.fillCsvData2()
-  md.csvWriteToFile()
+  if (
+    manipulatorManCommander.opts().typeOfFile == 3 ||
+    manipulatorManCommander.opts().typeOfFile == 2
+  ) {
+    md.csvWriteToFile()
+  }
 }
 
 if (path.extname(manipulatorManCommander.opts().input) == ".md") {
@@ -62,5 +70,10 @@ if (path.extname(manipulatorManCommander.opts().input) == ".md") {
     manipulatorManCommander.opts().run
   )
   md.fillCsvData2()
-  md.csvWriteToFile()
+  if (
+    manipulatorManCommander.opts().typeOfFile == 2 ||
+    manipulatorManCommander.opts().typeOfFile == 3
+  ) {
+    md.csvWriteToFile()
+  }
 }
