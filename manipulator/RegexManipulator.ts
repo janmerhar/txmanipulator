@@ -283,45 +283,16 @@ class RegexManipulator {
       // reading current question
       let questionText = questions[question]
 
-      // iščem konec odgovora
-      // pri tem moram paziti na zadnji odgovor
-
-      // ni zadnji index
       let iStart = iQuestions[index] + 1 + 1
       let iEnd = iQuestions[index + 1] || lines.length
       let questionAnswers = [
         String(lines[question]),
-        lines.slice(iStart, iEnd).join(""),
+        lines.slice(iStart, iEnd).join("\n").trim(),
         this.tag,
       ]
       console.log(questionAnswers)
-    })
-
-    for (let i = 0; i < questions.length; i++) {
-      let iQuestion = lines.indexOf(questions[i])
-      let iNextQuestion =
-        i + 1 < questions.length
-          ? lines.indexOf(questions[i + 1])
-          : lines.length - 1
-
-      let questionAnswers = [String(lines[iQuestion]), "", this.tag]
-      for (
-        let j = iQuestion + 1 + 1;
-        j < iNextQuestion && String(lines[j]).length != 0;
-        j++
-      ) {
-        questionAnswers[1] += String(lines[j])
-          .trim()
-          .concat(
-            j + 1 < iNextQuestion && String(lines[j + 1]).length != 0
-              ? "\n"
-              : ""
-          )
-      }
-      // not usefull for now
-      // questionAnswers[1] = this.clozeDetection(questionAnswers[1], 1)
       this.csvData.push(questionAnswers)
-    }
+    })
   }
 
   csvWriteToFile(writePath = this.fileName, writeExtension = "csv") {
