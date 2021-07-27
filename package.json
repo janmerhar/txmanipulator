@@ -1,10 +1,5 @@
 {
   "scripts": {
-    "clear_csv": "rm tex/*.csv",
-    "clear_txt": "rm tex/*.txt",
-    "clear_tex": "rm tex/*.tex",
-    "clear_all": "rm tex/*.csv && rm tex/*.txt && rm tex/*.tex",
-    "clear_lite": "rm tex/*.csv && rm tex/*.txt",
     "compile": "tsc -w"
   },
   "dependencies": {
