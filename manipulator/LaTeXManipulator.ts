@@ -1,6 +1,7 @@
 import * as fs from "fs"
 import * as child_process from "child_process"
 import * as path from "path"
+import { exit } from "process"
 
 class LaTeXManipulator {
   filePath: any
@@ -23,7 +24,9 @@ class LaTeXManipulator {
 
     const fileNameSplitted = this.fileName.split("_")
     this.tag =
-      tag || fileNameSplitted.length == 3
+      tag && tag.length > 0
+        ? tag
+        : fileNameSplitted.length == 3
         ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
         : ""
     this.fileTitle = this.fileText

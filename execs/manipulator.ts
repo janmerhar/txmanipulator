@@ -35,6 +35,7 @@ if (path.extname(manipulatorManCommander.opts().input) == ".tex") {
   tex.removeSections()
   tex.removeLaTeX()
   tex.removeDoubleEmptyLines()
+
   // mogoče je še prezgodaj
   // in to raje naredim v MDManipulator
   // tex.prepareMd()
@@ -66,6 +67,8 @@ if (path.extname(manipulatorManCommander.opts().input) == ".md") {
   const md = new MDManipulator(
     manipulatorManCommander.opts().input,
     manipulatorManCommander.opts().fileName,
+    // tukaj imam težave, saj ne naredi pravilnega taga
+    // verjetno je problem v konstruktorju
     manipulatorManCommander.opts().ankiTag,
     manipulatorManCommander.opts().run
   )
