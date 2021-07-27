@@ -29,7 +29,7 @@ templateCommander
   )
   .option(
     "-a, --author <strings...>",
-    "Authors(s)",
+    "Author(s)",
     CommandFunctions.joinThings,
     ""
   )

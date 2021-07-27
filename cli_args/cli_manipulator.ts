@@ -7,7 +7,7 @@ const manipulatorManCommander = new Command()
  * REQUIRED OPTIONS
  */
 manipulatorManCommander
-  .requiredOption("-i, --input <string>", "Filename that will be imported")
+  .requiredOption("-i, --input <string>", "Name of file that will be imported")
   .requiredOption(
     "-tof, --type-of-file <number>",
     "1 => MD file, 2 => CSV file, 3 => MD and CSV file",
@@ -30,7 +30,7 @@ manipulatorManCommander
   )
   .option(
     "-r, --run <number>",
-    "1 => runs manipulated data in program,  0 => doesn't run",
+    "1 => runs manipulated data in program,  0 => doesn't run anything",
     "1"
   )
 

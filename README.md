@@ -43,13 +43,13 @@ npm install
 4. Install TypeScript
 
 ```bash
-npm install typescript
+npm install typescript -g
 ```
 
 5. Run TypeScript compiler
 
 ```bash
-tsc -w
+npm run compile
 ```
 
 # Usage
@@ -58,4 +58,35 @@ Scripts are located in `execs` folder. You can run them with `node`. Note, you n
 
 ## Template CLI
 
+```bash
+Usage: template [options]
+
+Options:
+  -f, --file-name <strings...>  Name of the LaTeX output file
+  -t, --title <string...>       Title given by the user
+  -d, date <strings...>         Date given by the user (default: "2021-07-27")
+  -a, --author <strings...>     Author(s) (default: "")
+  -p, --packages <strings...>   packages added to \usepackage
+  -s, --sections <number>       Number of sections in the document
+  -h, --help                    display help for command
+
+
+```
+
 ## Manipulator CLI
+
+```bash
+Usage: manipulator [options]
+
+Options:
+  -i, --input <string>           Name of file that will be imported
+  -tof, --type-of-file <number>  1 => MD file, 2 => CSV file, 3 => MD and CSV
+                                 file (default: "3")
+  -at, --anki-tag <string>       Input tag field value for imported document:
+                                 eg. OMA-13
+  -f, --file-name <string>       Name of the output file
+  -r, --run <number>             1 => runs manipulated data in program,  0 =>
+                                 doesn't run anything (default: "1")
+  -h, --help                     display help for command
+
+```
