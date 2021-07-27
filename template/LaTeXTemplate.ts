@@ -1,6 +1,6 @@
 import * as child_process from "child_process"
 import * as fs from "fs"
-import { templateCommander } from "../cli_args/cli_latex_template"
+import { templateCommander } from "../cli_args/cli_template"
 import * as path from "path"
 
 class LaTeXTemplate {
