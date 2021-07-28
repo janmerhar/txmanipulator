@@ -1,16 +1,16 @@
 import { Command } from "commander"
-import { CommandFunctions } from "./cli_class"
+import { CommandFunctions } from "./CommandFunctions"
 
-const regexManCommander = new Command()
+const manipulatorManCommander = new Command()
 
 /*
  * REQUIRED OPTIONS
  */
-regexManCommander
-  .requiredOption("-i, --input <string>", "Filename that will be imported")
+manipulatorManCommander
+  .requiredOption("-i, --input <string>", "Name of file that will be imported")
   .requiredOption(
     "-tof, --type-of-file <number>",
-    "1 => txt file, 2 => csv file, 3 => txt and csv file",
+    "1 => MD file, 2 => CSV file, 3 => MD and CSV file",
     "3"
   )
 
@@ -18,7 +18,7 @@ regexManCommander
  * OPTIONAL OPTIONS
  */
 // I may implement optional output path
-regexManCommander
+manipulatorManCommander
   .option(
     "-at, --anki-tag <string>",
     "Input tag field value for imported document: eg. OMA-13"
@@ -30,11 +30,10 @@ regexManCommander
   )
   .option(
     "-r, --run <number>",
-    "1 => runs manipulated data in program,  0 => doesn't run",
+    "1 => runs manipulated data in program,  0 => doesn't run anything",
     "1"
   )
 
-regexManCommander.parse()
-// console.log(regexManCommander.opts())
+manipulatorManCommander.parse()
 
-export { regexManCommander }
+export { manipulatorManCommander }
