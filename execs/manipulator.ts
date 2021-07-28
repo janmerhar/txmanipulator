@@ -35,6 +35,7 @@ if (path.extname(manipulatorManCommander.opts().input) == ".tex") {
   tex.removeSections()
   tex.removeLaTeX()
   tex.removeDoubleEmptyLines()
+  tex.removeLaTeXComments()
 
   // mogoče je še prezgodaj
   // in to raje naredim v MDManipulator
