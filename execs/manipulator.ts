@@ -54,6 +54,7 @@ if (path.extname(manipulatorManCommander.opts().input) == ".tex") {
     manipulatorManCommander.opts().run,
     tex.getFileText()
   )
+  md.imageDetection()
   md.fillCsvData2()
   if (
     manipulatorManCommander.opts().typeOfFile == 3 ||
@@ -72,6 +73,7 @@ if (path.extname(manipulatorManCommander.opts().input) == ".md") {
     manipulatorManCommander.opts().ankiTag,
     manipulatorManCommander.opts().run
   )
+  md.imageDetection()
   md.fillCsvData2()
   if (
     manipulatorManCommander.opts().typeOfFile == 2 ||

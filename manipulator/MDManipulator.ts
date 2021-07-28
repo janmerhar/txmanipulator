@@ -87,6 +87,36 @@ class MDManipulator {
     return clozedText
   }
 
+  imageDetection() {
+    let urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g
+    let imageFormats = [
+      "JPEG",
+      "PNG",
+      "GIF",
+      "APNG",
+      "TIFF",
+      "MP4",
+      "MPEG",
+      "MPG",
+      "AVI",
+      "WEBM",
+    ]
+
+    let matches = this.fileText.match(urlRegex)
+    if (matches) {
+      matches.forEach((match: string) => {
+        let extension = path.extname(match).split(".")[1]
+        // replacing image link with IMG tag
+        if (imageFormats.indexOf(extension)) {
+          if (!this.fileText.match(`<img src="${match}" />`)) {
+            this.fileText = this.fileText
+              .split(match)
+              .join(`<img src="${match}" />`)
+          }
+        }
+      })
+    }
+  }
   /* 
     IMPROVED VERSION OF fillCsvData
   */
