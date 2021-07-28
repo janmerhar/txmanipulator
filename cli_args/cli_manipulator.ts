@@ -1,5 +1,5 @@
 import { Command } from "commander"
-import { CommandFunctions } from "./cli_class"
+import { CommandFunctions } from "./CommandFunctions"
 
 const manipulatorManCommander = new Command()
 

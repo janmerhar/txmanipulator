@@ -1,5 +1,5 @@
 import { Command } from "commander"
-import { CommandFunctions } from "./cli_class"
+import { CommandFunctions } from "./CommandFunctions"
 import dateFormat from "dateformat"
 
 // commander za create_latex_template.js
