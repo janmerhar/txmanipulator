@@ -2,7 +2,7 @@ import * as fs from "fs"
 import * as child_process from "child_process"
 import csvStringify from "csv-stringify"
 import * as path from "path"
-import { exit } from "process"
+const hljs = require("highlight.js")
 
 class MDManipulator {
   filePath: any
@@ -113,6 +113,38 @@ class MDManipulator {
               .split(match)
               .join(`<img src="${match}" />`)
           }
+        }
+      })
+    }
+  }
+
+  /*
+    NAČRT: 
+    1) najdem začetne topCodeRegex ter naredim SPLIT
+    2) znotraj SPLITanih polj pošiščem konce kode 
+      -> če so, to kodo nato dobim ven
+    3) dobljeno kodo spremenim s knjižnico
+    4) spremenjeno kodo vrinem nazaj na staro oz. naredim samo replace
+      -> vrninjevanje bo bolj varna zadeva, saj to le zlepim skupaj
+  */
+  codeDetection() {
+    // /s allows operator . to match newlines
+    const topCodeRegex = /```[a-z]+\r*\n/gs
+    // const matches = this.fileText.split(codeRegex)
+
+    // const regexp = topCodeRegex // /(?:^|\s)format_(.*?)(?:\s|$)/g
+    const topMatches = this.fileText.match(topCodeRegex)
+
+    const botCodeRegex = /```[^a-z]*\r*\n/gs
+    const botMatches = this.fileText.match(botCodeRegex)
+
+    let topSplit = this.fileText.split(topCodeRegex)
+    if (topSplit) {
+      topSplit.forEach((el: string, index: number) => {
+        if (el.match(botCodeRegex)) {
+          let codeText = el.split(botCodeRegex)[0]
+          console.log(hljs.highlightAuto(codeText).value)
+          console.log("-------------")
         }
       })
     }
