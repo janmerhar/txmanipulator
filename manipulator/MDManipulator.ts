@@ -132,13 +132,13 @@ class MDManipulator {
   codeDetection() {
     // /s allows operator . to match newlines
     const topCodeRegex = /```[a-z]+\r*\n/gs
-    const botCodeRegex = /```[^a-z]*\r*\n/gs
+    // const botCodeRegex = /```[^a-z]*\r*\n/gs
 
     let topSplit = this.fileText.split(topCodeRegex)
     if (topSplit) {
       topSplit.forEach((el: string, index: number) => {
-        if (el.match(botCodeRegex)) {
-          let codeText = el.split(botCodeRegex)[0]
+        if (el.match("```")) {
+          let codeText = el.split("```")[0]
           let highlightedCode = `<pre><code>${
             hljs.highlightAuto(codeText).value
           }</code></pre>`
@@ -147,6 +147,8 @@ class MDManipulator {
             codeText.trim(),
             highlightedCode
           )
+          // console.log(highlightedCode)
+          // console.log("-------")
         }
       })
     }
