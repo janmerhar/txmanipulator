@@ -127,27 +127,35 @@ class MDManipulator {
     4) spremenjeno kodo vrinem nazaj na staro oz. naredim samo replace
       -> vrninjevanje bo bolj varna zadeva, saj to le zlepim skupaj
   */
+  // syntax styles availble at
+  // https://github.com/highlightjs/highlight.js/blob/main/src/styles/atom-one-dark.css
   codeDetection() {
     // /s allows operator . to match newlines
     const topCodeRegex = /```[a-z]+\r*\n/gs
-    // const matches = this.fileText.split(codeRegex)
-
-    // const regexp = topCodeRegex // /(?:^|\s)format_(.*?)(?:\s|$)/g
-    const topMatches = this.fileText.match(topCodeRegex)
-
     const botCodeRegex = /```[^a-z]*\r*\n/gs
-    const botMatches = this.fileText.match(botCodeRegex)
 
     let topSplit = this.fileText.split(topCodeRegex)
     if (topSplit) {
       topSplit.forEach((el: string, index: number) => {
         if (el.match(botCodeRegex)) {
           let codeText = el.split(botCodeRegex)[0]
-          console.log(hljs.highlightAuto(codeText).value)
-          console.log("-------------")
+          let highlightedCode = `<pre><code>${
+            hljs.highlightAuto(codeText).value
+          }</code></pre>`
+
+          this.fileText = this.fileText.replace(
+            codeText.trim(),
+            highlightedCode
+          )
         }
       })
     }
+    // cleaning out MD ``` code syntax
+    this.fileText = this.fileText
+      .split(/```[a-z]+\r*\n/)
+      .join("\n")
+      .split("```")
+      .join("\n")
   }
   /* 
     IMPROVED VERSION OF fillCsvData
