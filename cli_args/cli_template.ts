@@ -22,7 +22,7 @@ templateCommander
 // add --anki-tag -atag for custom tags that are not derived from \title
 templateCommander
   .option(
-    "-d, date <strings...>",
+    "-d, --date <strings...>",
     "Date given by the user",
     CommandFunctions.joinThings,
     dateFormat(new Date(), "yyyy-mm-dd")
