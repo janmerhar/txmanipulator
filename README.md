@@ -64,7 +64,7 @@ Usage: template [options]
 Options:
   -f, --file-name <strings...>  Name of the LaTeX output file
   -t, --title <string...>       Title given by the user
-  -d, date <strings...>         Date given by the user (default: "2021-07-27")
+  -d, --date <strings...>         Date given by the user (default: "2021-07-27")
   -a, --author <strings...>     Author(s) (default: "")
   -p, --packages <strings...>   packages added to \usepackage
   -s, --sections <number>       Number of sections in the document
