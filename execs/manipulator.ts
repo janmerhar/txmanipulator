@@ -54,6 +54,8 @@ if (path.extname(manipulatorManCommander.opts().input) == ".tex") {
     manipulatorManCommander.opts().run,
     tex.getFileText()
   )
+  // nekako moram narediti, da bom lahko outputal datoteko po CSV
+  // md.replaceMathExpression()
   md.fillCsvData2()
   if (
     manipulatorManCommander.opts().typeOfFile == 3 ||
@@ -72,6 +74,8 @@ if (path.extname(manipulatorManCommander.opts().input) == ".md") {
     manipulatorManCommander.opts().ankiTag,
     manipulatorManCommander.opts().run
   )
+  // nekako moram narediti, da bom lahko outputal datoteko po CSV
+  // md.replaceMathExpression()
   md.fillCsvData2()
   if (
     manipulatorManCommander.opts().typeOfFile == 2 ||

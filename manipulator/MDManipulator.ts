@@ -46,35 +46,32 @@ class MDManipulator {
     }
   }
 
-  replaceMathExpression(text: string, isVaried: boolean) {
-    let fileText = (" " + text).slice(1)
+  replaceMathExpression(isVaried: boolean = true) {
     if (isVaried) {
       // option for inline and multiline math => not obsidian friendly
-      fileText = fileText
+      this.fileText = this.fileText
         .split(/\\\(\s*/)
-        .join("$ ")
+        .join("$")
         .split(/\s*\\\)/)
-        .join(" $")
-      fileText = fileText
+        .join("$")
+      this.fileText = this.fileText
         .split(/\\\[\s*/)
-        .join("$$ ")
+        .join("$$")
         .split(/\s*\\\]/)
-        .join(" $$")
+        .join("$$")
     } else {
       // option for multiline only => obsidian friendly
-      fileText = fileText
+      this.fileText = this.fileText
         .split(/\\\(\s*/)
-        .join("$$ ")
+        .join("$$")
         .split(/\s*\\\)/)
-        .join(" $$")
-      fileText = fileText
+        .join("$$")
+      this.fileText = this.fileText
         .split(/\\\[\s*/)
-        .join("$$ ")
+        .join("$$")
         .split(/\s*\\\]/)
-        .join(" $$")
+        .join("$$")
     }
-
-    return fileText
   }
 
   clozeDetection(text: string, counter: number) {
