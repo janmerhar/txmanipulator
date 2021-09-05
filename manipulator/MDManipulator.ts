@@ -197,7 +197,11 @@ class MDManipulator {
         lines.slice(iStart, iEnd).join("\n").trim(),
         this.tag,
       ]
-      // console.log(this.numOfTitles(questionAnswers[0]))
+
+      if (this.numOfTitles(questionAnswers[0]) == 3) {
+        // console.log(this.modify3Titles(questionAnswers[0]))
+        questionAnswers[0] = this.modify3Titles(questionAnswers[0])
+      }
       this.csvData.push(questionAnswers)
     })
   }
@@ -242,11 +246,11 @@ class MDManipulator {
     let matchColumn = title.match(/.+:/)
     let matchArrow = title.match(/.+=>/)
 
-    let number = 0
+    let number = 1
     if (matchColumn && matchArrow) {
-      number = 2
+      number = 3
     } else if (matchColumn) {
-      number = 1
+      number = 2
     }
 
     return number
@@ -260,9 +264,9 @@ class MDManipulator {
     for (let i = 0; i < classes.length; i++) {
       openingTag += " " + classes[i]
     }
-    openingTag += `"> `
+    openingTag += `">`
     openingTag += element
-    openingTag += ` </${tag}>`
+    openingTag += `</${tag}>`
 
     return openingTag
   }
@@ -275,9 +279,15 @@ class MDManipulator {
       title3: title.split("=>")[1].trim(),
     }
     let newTitles = {
-      title1: `${cleanedTitles.title1}: `,
-      title2: `${cleanedTitles.title2} => `,
-      title3: `${cleanedTitles.title3}`,
+      title1: `${this.addHTML(cleanedTitles.title1, "span", [
+        "naslov-sklop-1",
+      ])}: `,
+      title2: `${this.addHTML(cleanedTitles.title2, "span", [
+        "naslov-sklop-2",
+      ])} => `,
+      title3: `${this.addHTML(cleanedTitles.title3, "span", [
+        "naslov-sklop-3",
+      ])}`,
     }
 
     return newTitles.title1 + newTitles.title2 + newTitles.title3
