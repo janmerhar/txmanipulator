@@ -175,7 +175,6 @@ class MDManipulator {
         }
       }),
     ]
-    // console.log(questions)
     // loopping through every question
 
     // searching for indexes of questions
@@ -198,7 +197,7 @@ class MDManipulator {
         lines.slice(iStart, iEnd).join("\n").trim(),
         this.tag,
       ]
-      // console.log(questionAnswers)
+      // console.log(this.numOfTitles(questionAnswers[0]))
       this.csvData.push(questionAnswers)
     })
   }
@@ -234,6 +233,23 @@ class MDManipulator {
       array[j] = temp
     }
     return array
+  }
+
+  // searching for n-title-type title
+  // eg. Title1: Title2 => Title3
+  // eg. Title1: Title2
+  numOfTitles(title: string): number {
+    let matchColumn = title.match(/.+:/)
+    let matchArrow = title.match(/.+=>/)
+
+    let number = 0
+    if (matchColumn && matchArrow) {
+      number = 2
+    } else if (matchColumn) {
+      number = 1
+    }
+
+    return number
   }
 }
 
