@@ -251,6 +251,37 @@ class MDManipulator {
 
     return number
   }
+
+  // function that encaspuslates text within passed tags and class parameters
+  // needed implementation in case of non array like classes parametre
+  addHTML(element: string, tag: string, classes: string[]): string {
+    let openingTag = `<${tag} class="`
+
+    for (let i = 0; i < classes.length; i++) {
+      openingTag += " " + classes[i]
+    }
+    openingTag += `"> `
+    openingTag += element
+    openingTag += ` </${tag}>`
+
+    return openingTag
+  }
+
+  modify3Titles(title: string): string {
+    // splitting string into separate titles
+    let cleanedTitles = {
+      title1: title.split(":")[0].trim(),
+      title2: title.split("=>")[0].split(":")[1].trim(),
+      title3: title.split("=>")[1].trim(),
+    }
+    let newTitles = {
+      title1: `${cleanedTitles.title1}: `,
+      title2: `${cleanedTitles.title2} => `,
+      title3: `${cleanedTitles.title3}`,
+    }
+
+    return newTitles.title1 + newTitles.title2 + newTitles.title3
+  }
 }
 
 export { MDManipulator }
