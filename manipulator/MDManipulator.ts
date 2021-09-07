@@ -309,11 +309,23 @@ class MDManipulator {
       return element
     })
   }
+
   CSVLineBreaksToHTML() {
     this.csvData.map((element: string[]) => {
       element[0] = element[0].split(/\r*\n/).join("<br />")
       element[1] = element[1].split(/\r*\n/).join("<br />")
     })
+  }
+
+  titleReplaceSpecial(element: string): string {
+    const oldCharacters = [":", "=>"]
+    const newCharacters = ["\\(:\\)", "\\(\\Rightarrow\\)"]
+
+    oldCharacters.forEach((character, index) => {
+      element = element.split(character).join(newCharacters[index])
+    })
+
+    return element
   }
 }
 
