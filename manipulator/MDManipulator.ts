@@ -118,21 +118,11 @@ class MDManipulator {
     }
   }
 
-  /*
-    NAČRT: 
-    1) najdem začetne topCodeRegex ter naredim SPLIT
-    2) znotraj SPLITanih polj pošiščem konce kode 
-      -> če so, to kodo nato dobim ven
-    3) dobljeno kodo spremenim s knjižnico
-    4) spremenjeno kodo vrinem nazaj na staro oz. naredim samo replace
-      -> vrninjevanje bo bolj varna zadeva, saj to le zlepim skupaj
-  */
   // syntax styles availble at
   // https://github.com/highlightjs/highlight.js/blob/main/src/styles/atom-one-dark.css
   codeDetection() {
     // /s allows operator . to match newlines
     const topCodeRegex = /```[a-z]+\r*\n/gs
-    // const botCodeRegex = /```[^a-z]*\r*\n/gs
 
     let topSplit = this.fileText.split(topCodeRegex)
     if (topSplit) {
@@ -147,8 +137,6 @@ class MDManipulator {
             codeText.trim(),
             highlightedCode
           )
-          // console.log(highlightedCode)
-          // console.log("-------")
         }
       })
     }
@@ -159,9 +147,7 @@ class MDManipulator {
       .split("```")
       .join("\n")
   }
-  /* 
-    IMPROVED VERSION OF fillCsvData
-  */
+
   fillCsvData2() {
     // splitting document into lines
     const lines = this.fileText.split(/\r*\n/g)
@@ -175,14 +161,13 @@ class MDManipulator {
         }
       }),
     ]
-    // loopping through every question
 
     // searching for indexes of questions
     let iQuestions: any[] = []
     questions.forEach((question, index) => {
       iQuestions.push(lines.indexOf(question))
     })
-    // console.log(iQuestions.length)
+
     /*
       GAINING ANSWERS TO ADD TO QUESTION
     */
@@ -198,10 +183,6 @@ class MDManipulator {
         this.tag,
       ]
 
-      if (this.numOfTitles(questionAnswers[0]) == 3) {
-        // console.log(this.modify3Titles(questionAnswers[0]))
-        questionAnswers[0] = this.modify3Titles(questionAnswers[0])
-      }
       this.csvData.push(questionAnswers)
     })
   }
@@ -278,6 +259,8 @@ class MDManipulator {
       title2: title.split("=>")[0].split(":")[1].trim(),
       title3: title.split("=>")[1].trim(),
     }
+
+    // modifying files to different colors
     let newTitles = {
       title1: `${this.addHTML(cleanedTitles.title1, "span", [
         "naslov-sklop-1",
@@ -291,6 +274,40 @@ class MDManipulator {
     }
 
     return newTitles.title1 + newTitles.title2 + newTitles.title3
+  }
+
+  modify2Titles(title: string): string {
+    const cleanedTitles = {
+      title1: title.split(":")[0].trim(),
+      title2: title.split(":")[1].trim(),
+    }
+
+    const newTitles = {
+      title1: `${this.addHTML(cleanedTitles.title1, "span", [
+        "naslov-sklop-2",
+      ])}: `,
+      title2: `${this.addHTML(cleanedTitles.title2, "span", [
+        "naslov-sklop-3",
+      ])}`,
+    }
+
+    return newTitles.title1 + newTitles.title2
+  }
+
+  // function that automates title styling
+  styleAllTitles(): void {
+    // element is 2D array [question, answer(s)]
+    this.csvData.map((element: string[]) => {
+      let titleCount = this.numOfTitles(element[0])
+
+      if (titleCount == 3) {
+        element[0] = this.modify3Titles(element[0])
+      } else if (titleCount == 2) {
+        element[0] = this.modify2Titles(element[0])
+      }
+
+      return element
+    })
   }
 }
 
