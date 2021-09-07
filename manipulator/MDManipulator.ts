@@ -295,7 +295,7 @@ class MDManipulator {
   }
 
   // function that automates title styling
-  styleAllTitles(): void {
+  CSVstyleAllTitles(): void {
     // element is 2D array [question, answer(s)]
     this.csvData.map((element: string[]) => {
       let titleCount = this.numOfTitles(element[0])
@@ -307,6 +307,12 @@ class MDManipulator {
       }
 
       return element
+    })
+  }
+  CSVLineBreaksToHTML() {
+    this.csvData.map((element: string[]) => {
+      element[0] = element[0].split(/\r*\n/).join("<br />")
+      element[1] = element[1].split(/\r*\n/).join("<br />")
     })
   }
 }
