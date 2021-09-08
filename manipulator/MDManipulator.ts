@@ -327,6 +327,16 @@ class MDManipulator {
 
     return element
   }
+  // answerReplaceSpecial(element: string): string {}
+
+  titleAnswerReplaceSpecial(): void {
+    // uprabim funckijo title replace in poznere answer replace
+    this.csvData.map((element: string[], index: number) => {
+      element[0] = this.titleReplaceSpecial(element[0])
+      // answerReplaceSpecial(element[1])
+      return element
+    })
+  }
 }
 
 export { MDManipulator }
