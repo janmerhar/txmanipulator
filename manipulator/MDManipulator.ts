@@ -331,8 +331,32 @@ class MDManipulator {
     this.csvData.map((element: string[], index: number) => {
       element[0] = this.titleReplaceSpecial(element[0])
       // answerReplaceSpecial(element[1])
+      element[1] = this.answerReplaceSpecial(element[1])
       return element
     })
+  }
+
+  // searches for lines that star with ::
+  // and styles them for Anki output
+  doubleColumnDefinition(element: string): string {
+    let definition = element.match(/::(.+)\n+/)
+
+    let newElement = element
+    if (definition) {
+      newElement = newElement
+        .split(definition[0])
+        .join(
+          this.addHTML(`\\(::\\) ${definition[1].trim()}`, "div", [
+            "definition",
+          ])
+        )
+    }
+
+    return newElement
+  }
+
+  answerReplaceSpecial(element: string): string {
+    return this.doubleColumnDefinition(element)
   }
 }
 

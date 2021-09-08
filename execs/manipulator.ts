@@ -61,8 +61,8 @@ if (path.extname(manipulatorManCommander.opts().input) == ".tex") {
   md.codeDetection()
   md.fillCsvData2()
   md.CSVstyleAllTitles()
-  md.CSVLineBreaksToHTML()
   md.titleAnswerReplaceSpecial()
+  md.CSVLineBreaksToHTML()
   if (
     manipulatorManCommander.opts().typeOfFile == 3 ||
     manipulatorManCommander.opts().typeOfFile == 2
@@ -86,8 +86,8 @@ if (path.extname(manipulatorManCommander.opts().input) == ".md") {
   md.codeDetection()
   md.fillCsvData2()
   md.CSVstyleAllTitles()
-  md.CSVLineBreaksToHTML()
   md.titleAnswerReplaceSpecial()
+  md.CSVLineBreaksToHTML()
   if (
     manipulatorManCommander.opts().typeOfFile == 2 ||
     manipulatorManCommander.opts().typeOfFile == 3
