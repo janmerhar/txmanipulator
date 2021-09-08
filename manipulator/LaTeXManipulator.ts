@@ -127,6 +127,13 @@ class LaTeXManipulator {
     // fileText = this.replaceMathExpression(fileText, true)
   }
 
+  removeLaTeXComments() {
+    this.fileText = this.fileText
+      .split(/(\r*\n)*\s*%.*\r*\n/)
+      .join(" ")
+      .trim()
+  }
+
   writeToFile(writePath = this.fileName, writeExtension = "md") {
     let writtenFile = "LOG_" + writePath + "." + writeExtension
     fs.writeFileSync(writtenFile, this.fileText)

@@ -58,7 +58,7 @@ Scripts are located in `execs` folder. You can run them with `node`. Note, you n
 
 ## Template CLI
 
-```bash
+```
 Usage: template [options]
 
 Options:
@@ -74,7 +74,7 @@ Options:
 
 ## Manipulator CLI
 
-```bash
+```
 Usage: manipulator [options]
 
 Options:

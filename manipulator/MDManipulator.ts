@@ -2,7 +2,7 @@ import * as fs from "fs"
 import * as child_process from "child_process"
 import csvStringify from "csv-stringify"
 import * as path from "path"
-import { exit } from "process"
+const hljs = require("highlight.js")
 
 class MDManipulator {
   filePath: any
@@ -84,9 +84,67 @@ class MDManipulator {
     return clozedText
   }
 
-  /* 
-    IMPROVED VERSION OF fillCsvData
-  */
+  imageDetection() {
+    let urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g
+    let imageFormats = [
+      "JPEG",
+      "PNG",
+      "GIF",
+      "APNG",
+      "TIFF",
+      "MP4",
+      "MPEG",
+      "MPG",
+      "AVI",
+      "WEBM",
+    ]
+
+    let matches = this.fileText.match(urlRegex)
+    if (matches) {
+      matches.forEach((match: string) => {
+        let extension = path.extname(match).split(".")[1]
+        // replacing image link with IMG tag
+        if (imageFormats.indexOf(extension)) {
+          if (!this.fileText.match(`<img src="${match}" />`)) {
+            this.fileText = this.fileText
+              .split(match)
+              .join(`<img src="${match}" />`)
+          }
+        }
+      })
+    }
+  }
+
+  // syntax styles availble at
+  // https://github.com/highlightjs/highlight.js/blob/main/src/styles/atom-one-dark.css
+  codeDetection() {
+    // /s allows operator . to match newlines
+    const topCodeRegex = /```[a-z]+\r*\n/gs
+
+    let topSplit = this.fileText.split(topCodeRegex)
+    if (topSplit) {
+      topSplit.forEach((el: string, index: number) => {
+        if (el.match("```")) {
+          let codeText = el.split("```")[0]
+          let highlightedCode = `<pre><code>${
+            hljs.highlightAuto(codeText).value
+          }</code></pre>`
+
+          this.fileText = this.fileText.replace(
+            codeText.trim(),
+            highlightedCode
+          )
+        }
+      })
+    }
+    // cleaning out MD ``` code syntax
+    this.fileText = this.fileText
+      .split(/```[a-z]+\r*\n/)
+      .join("\n")
+      .split("```")
+      .join("\n")
+  }
+
   fillCsvData2() {
     // splitting document into lines
     const lines = this.fileText.split(/\r*\n/g)
@@ -100,15 +158,13 @@ class MDManipulator {
         }
       }),
     ]
-    // console.log(questions)
-    // loopping through every question
 
     // searching for indexes of questions
     let iQuestions: any[] = []
     questions.forEach((question, index) => {
       iQuestions.push(lines.indexOf(question))
     })
-    // console.log(iQuestions.length)
+
     /*
       GAINING ANSWERS TO ADD TO QUESTION
     */
@@ -123,7 +179,7 @@ class MDManipulator {
         lines.slice(iStart, iEnd).join("\n").trim(),
         this.tag,
       ]
-      // console.log(questionAnswers)
+
       this.csvData.push(questionAnswers)
     })
   }
@@ -159,6 +215,124 @@ class MDManipulator {
       array[j] = temp
     }
     return array
+  }
+
+  // searching for n-title-type title
+  // eg. Title1: Title2 => Title3
+  // eg. Title1: Title2
+  numOfTitles(title: string): number {
+    let matchColumn = title.match(/.+:/)
+    let matchArrow = title.match(/.+=>/)
+
+    let number = 1
+    if (matchColumn && matchArrow) {
+      number = 3
+    } else if (matchColumn) {
+      number = 2
+    }
+
+    return number
+  }
+
+  // function that encaspuslates text within passed tags and class parameters
+  // needed implementation in case of non array like classes parametre
+  addHTML(element: string, tag: string, classes: string[]): string {
+    let openingTag = `<${tag} class="`
+
+    for (let i = 0; i < classes.length; i++) {
+      openingTag += " " + classes[i]
+    }
+    openingTag += `">`
+    openingTag += element
+    openingTag += `</${tag}>`
+
+    return openingTag
+  }
+
+  modify3Titles(title: string): string {
+    // splitting string into separate titles
+    let cleanedTitles = {
+      title1: title.split(":")[0].trim(),
+      title2: title.split("=>")[0].split(":")[1].trim(),
+      title3: title.split("=>")[1].trim(),
+    }
+
+    // modifying files to different colors
+    let newTitles = {
+      title1: `${this.addHTML(cleanedTitles.title1, "span", [
+        "naslov-sklop-1",
+      ])}: `,
+      title2: `${this.addHTML(cleanedTitles.title2, "span", [
+        "naslov-sklop-2",
+      ])} => `,
+      title3: `${this.addHTML(cleanedTitles.title3, "span", [
+        "naslov-sklop-3",
+      ])}`,
+    }
+
+    return newTitles.title1 + newTitles.title2 + newTitles.title3
+  }
+
+  modify2Titles(title: string): string {
+    const cleanedTitles = {
+      title1: title.split(":")[0].trim(),
+      title2: title.split(":")[1].trim(),
+    }
+
+    const newTitles = {
+      title1: `${this.addHTML(cleanedTitles.title1, "span", [
+        "naslov-sklop-2",
+      ])}: `,
+      title2: `${this.addHTML(cleanedTitles.title2, "span", [
+        "naslov-sklop-3",
+      ])}`,
+    }
+
+    return newTitles.title1 + newTitles.title2
+  }
+
+  // function that automates title styling
+  CSVstyleAllTitles(): void {
+    // element is 2D array [question, answer(s)]
+    this.csvData.map((element: string[]) => {
+      let titleCount = this.numOfTitles(element[0])
+
+      if (titleCount == 3) {
+        element[0] = this.modify3Titles(element[0])
+      } else if (titleCount == 2) {
+        element[0] = this.modify2Titles(element[0])
+      }
+
+      return element
+    })
+  }
+
+  CSVLineBreaksToHTML() {
+    this.csvData.map((element: string[]) => {
+      element[0] = element[0].split(/\r*\n/).join("<br />")
+      element[1] = element[1].split(/\r*\n/).join("<br />")
+    })
+  }
+
+  titleReplaceSpecial(element: string): string {
+    const oldCharacters = [":", "=>"]
+    const newCharacters = ["\\(:\\)", "\\(\\Rightarrow\\)"]
+
+    oldCharacters.forEach((character, index) => {
+      element = element.split(character).join(newCharacters[index])
+    })
+
+    return element
+  }
+  // answerReplaceSpecial(element: string): string {}
+
+  titleAnswerReplaceSpecial(): void {
+    // uprabim funckijo title replace in poznere answer replace
+    this.csvData.map((element: string[], index: number) => {
+      element[0] = this.titleReplaceSpecial(element[0])
+      // answerReplaceSpecial(element[1])
+      return element
+    })
   }
 }
 

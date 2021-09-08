@@ -5,24 +5,24 @@ import dateFormat from "dateformat"
 // commander za create_latex_template.js
 const templateCommander = new Command()
 
+CommandFunctions.filenameOffDirStructure()
 // required options
-templateCommander
-  .requiredOption(
-    "-f, --file-name <strings...>",
-    "Name of the LaTeX output file",
-    CommandFunctions.fileWithoutExtension
-  )
-  .requiredOption(
-    "-t, --title <string...>",
-    "Title given by the user",
-    CommandFunctions.joinThings
-  )
+templateCommander.requiredOption(
+  "-t, --title <string...>",
+  "Title given by the user",
+  CommandFunctions.joinThings
+)
 
 // optional options
 // add --anki-tag -atag for custom tags that are not derived from \title
 templateCommander
   .option(
-    "-d, --date <strings...>",
+    "-f, --file-name <strings...>",
+    "Name of the LaTeX output file",
+    CommandFunctions.filenameOffDirStructure()
+  )
+  .option(
+    "-d, date <strings...>",
     "Date given by the user",
     CommandFunctions.joinThings,
     dateFormat(new Date(), "yyyy-mm-dd")

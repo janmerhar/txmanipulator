@@ -35,6 +35,7 @@ if (path.extname(manipulatorManCommander.opts().input) == ".tex") {
   tex.removeSections()
   tex.removeLaTeX()
   tex.removeDoubleEmptyLines()
+  tex.removeLaTeXComments()
 
   // mogoče je še prezgodaj
   // in to raje naredim v MDManipulator
@@ -56,7 +57,12 @@ if (path.extname(manipulatorManCommander.opts().input) == ".tex") {
   )
   // nekako moram narediti, da bom lahko outputal datoteko po CSV
   // md.replaceMathExpression()
+  md.imageDetection()
+  md.codeDetection()
   md.fillCsvData2()
+  md.CSVstyleAllTitles()
+  md.CSVLineBreaksToHTML()
+  md.titleAnswerReplaceSpecial()
   if (
     manipulatorManCommander.opts().typeOfFile == 3 ||
     manipulatorManCommander.opts().typeOfFile == 2
@@ -76,7 +82,12 @@ if (path.extname(manipulatorManCommander.opts().input) == ".md") {
   )
   // nekako moram narediti, da bom lahko outputal datoteko po CSV
   // md.replaceMathExpression()
+  md.imageDetection()
+  md.codeDetection()
   md.fillCsvData2()
+  md.CSVstyleAllTitles()
+  md.CSVLineBreaksToHTML()
+  md.titleAnswerReplaceSpecial()
   if (
     manipulatorManCommander.opts().typeOfFile == 2 ||
     manipulatorManCommander.opts().typeOfFile == 3

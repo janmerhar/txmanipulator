@@ -21,6 +21,32 @@ class CommandFunctions {
         .join(".")
     }
   }
+  static filenameOffDirStructure() {
+    const cwd = process.cwd()
+    let levels = {
+      lvl1: path.basename(cwd),
+      lvl2: path.basename(path.resolve(cwd, "..")),
+      lvl3: path.basename(path.resolve(cwd, "..", "..")),
+    }
+
+    let fileName = "DEFAULT_NAME"
+    // priprava za validacijo ali je pravo ime
+    // 1. validacija za lvl3
+    let regex = /^[A-Ž0-9]+$/
+    if (regex.test(levels.lvl3)) {
+      // 2. validacija za lvl1
+      if (/^[0-9]+$/.test(levels.lvl1.split("_")[0])) {
+        if (levels.lvl1.split("_")[1].charAt(0) == levels.lvl2.charAt(0)) {
+          fileName = `${levels.lvl1.split("_")[0]}_${levels.lvl3}_${
+            levels.lvl1.split("_")[1]
+          }`
+        }
+      }
+    }
+
+    // console.log(fileName)
+    return fileName
+  }
 }
 
 export { CommandFunctions }
