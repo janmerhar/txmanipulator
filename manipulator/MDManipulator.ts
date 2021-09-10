@@ -324,7 +324,6 @@ class MDManipulator {
 
     return element
   }
-  // answerReplaceSpecial(element: string): string {}
 
   titleAnswerReplaceSpecial(): void {
     // uprabim funckijo title replace in poznere answer replace
@@ -356,7 +355,18 @@ class MDManipulator {
   }
 
   answerReplaceSpecial(element: string): string {
-    return this.doubleColumnDefinition(element)
+    element = this.doubleColumnDefinition(element)
+    element = this.dashesToLonger(element)
+
+    return element
+  }
+
+  // dela le na prvem elementu ne glede na /g flag
+  dashesToLonger(element: string): string {
+    // return element.replace(/(\n|^)(-)( *.*\n)/g, "$1—$3")
+    let tmpElement = element.split(/\n *-/).join("\n—")
+    tmpElement = tmpElement.split(/^ *-/).join("—")
+    return tmpElement
   }
 }
 
