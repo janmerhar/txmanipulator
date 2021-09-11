@@ -342,12 +342,15 @@ class MDManipulator {
 
     let newElement = element
     if (definition) {
+      // capatilizing first letter in string
+      let replacementString = definition[1].trim()
+      // definition[1].charAt(0) = definition[1].charAt(0).toUpperCase()
+      replacementString =
+        replacementString.charAt(0).toUpperCase() + replacementString.slice(1)
       newElement = newElement
         .split(definition[0])
         .join(
-          this.addHTML(`\\(::\\) ${definition[1].trim()}`, "div", [
-            "definition",
-          ])
+          this.addHTML(`\\(::\\) ${replacementString}`, "div", ["definition"])
         )
     }
 
@@ -366,6 +369,7 @@ class MDManipulator {
     // return element.replace(/(\n|^)(-)( *.*\n)/g, "$1—$3")
     let tmpElement = element.split(/\n *-/).join("\n—")
     tmpElement = tmpElement.split(/^ *-/).join("—")
+
     return tmpElement
   }
 }
