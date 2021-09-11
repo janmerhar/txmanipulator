@@ -1,17 +1,20 @@
 import * as path from "path"
 
 class CommandFunctions {
-  static myParseInt(value: any, dummyPrevious: any) {
+  static myParseInt(value: any, dummyPrevious: any): number {
     // parseInt takes a string and an optional radix
     return parseInt(value)
   }
-  static joinThings(value: any, previous: any) {
+
+  static joinThings(value: any, previous: any): string {
     return `${previous || ""} ${value}`.trim()
   }
-  static lowerCase(value: string, dummyPrevious: any) {
+
+  static lowerCase(value: string, dummyPrevious: any): string {
     return value.toLowerCase()
   }
-  static fileWithoutExtension(value: string) {
+
+  static fileWithoutExtension(value: string): string {
     if (path.extname(value).length == 0) {
       return value
     } else {
@@ -21,7 +24,8 @@ class CommandFunctions {
         .join(".")
     }
   }
-  static filenameOffDirStructure() {
+
+  static filenameOffDirStructure(): string {
     const cwd = process.cwd()
     let levels = {
       lvl1: path.basename(cwd),
@@ -44,7 +48,6 @@ class CommandFunctions {
       }
     }
 
-    // console.log(fileName)
     return fileName
   }
 }

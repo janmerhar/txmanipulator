@@ -28,11 +28,13 @@ class LaTeXManipulator {
         : fileNameSplitted.length == 3
         ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
         : ""
+
     this.fileTitle = this.fileText
       .match(/\\title\{(.)*\}/gi)[0]
       .replace("\\title{", "")
       .replace("}", "")
       .trim()
+
     this.runPrograms = runPrograms
   }
 
@@ -57,6 +59,7 @@ class LaTeXManipulator {
   prepareTag(fileName: string): string {
     let words = fileName.split(" ")
     const num = words[words.length - 1]
+
     words.length -= 1
     words = words.map((word) => word.charAt(0))
 
@@ -73,7 +76,6 @@ class LaTeXManipulator {
 
   removeSections(): void {
     // cleaning extra \n before \section tag
-    // this.fileText = this.fileText.split(/\n{3,}\\section/).join(/\n\n\\section/)
     this.fileText = this.fileText.replace(
       /\r*\n+\\section\*\{(.*)\}/g,
       function (a: string, b: string) {
@@ -98,26 +100,27 @@ class LaTeXManipulator {
   removeLaTeX(): void {
     // odstranim \documentclass
     this.fileText = this.fileText.split(/\\documentclass\{.*\}/).join("")
+
     // odstranim title, author, date
-    this.fileText = this.fileText
-      .split(/\\title\{.*\}/)
-      .join("")
-      .split(/\\author\{.*\}/)
-      .join("")
-      .split(/\\date\{.*\}/)
-      .join("")
+    this.fileText = this.fileText.split(/\\title\{.*\}/).join("")
+    this.fileText = this.fileText.split(/\\author\{.*\}/).join("")
+    this.fileText = this.fileText.split(/\\date\{.*\}/).join("")
+
     // odstranim \maketitle
     this.fileText = this.fileText.split(/\\maketitle/).join("")
+
     // odstranim \begin in \end tage
     this.fileText = this.fileText
       .split(/\\begin\{document\}/)
       .join("")
       .split(/\\end\{document\}/)
       .join("")
-    this.fileText = this.fileText.replace("\n", "")
+    this.fileText = this.fileText.trim()
+
     // odstranim \userpackage
     this.fileText = this.fileText.split(/\\usepackage\{.*\}(\n)*/).join("")
   }
+
   prepareMd(): void {
     // adding master # for title that is extracted from -t flag
     this.fileText = `# ${this.fileTitle}\n\n${this.fileText}`
