@@ -1,8 +1,10 @@
-const path = require("path")
+import path from "path"
 
 import { manipulatorManCommander } from "../cli_args/cli_manipulator"
 import { LaTeXManipulator } from "../manipulator/LaTeXManipulator"
 import { MDManipulator } from "../manipulator/MDManipulator"
+
+const manipulatorOpts = manipulatorManCommander.opts()
 
 /*
     NAČRT: 
@@ -21,13 +23,13 @@ import { MDManipulator } from "../manipulator/MDManipulator"
  * Writing MD file
  * Calling MDManipulator
  */
-if (path.extname(manipulatorManCommander.opts().input) == ".tex") {
+if (path.extname(manipulatorOpts.input) == ".tex") {
   const tex = new LaTeXManipulator(
-    manipulatorManCommander.opts().input,
-    manipulatorManCommander.opts().fileName,
+    manipulatorOpts.input,
+    manipulatorOpts.fileName,
     // can get rid of you
-    manipulatorManCommander.opts().ankiTag,
-    manipulatorManCommander.opts().run
+    manipulatorOpts.ankiTag,
+    manipulatorOpts.run
   )
 
   tex.removeEndlines()
@@ -41,18 +43,15 @@ if (path.extname(manipulatorManCommander.opts().input) == ".tex") {
   // in to raje naredim v MDManipulator
   // tex.prepareMd()
 
-  if (
-    manipulatorManCommander.opts().typeOfFile == 1 ||
-    manipulatorManCommander.opts().typeOfFile == 3
-  ) {
+  if (manipulatorOpts.typeOfFile == 1 || manipulatorOpts.typeOfFile == 3) {
     tex.writeToFile()
   }
 
   const md = new MDManipulator(
-    manipulatorManCommander.opts().input,
+    manipulatorOpts.input,
     tex.getFileName(),
     tex.getTagName(),
-    manipulatorManCommander.opts().run,
+    manipulatorOpts.run,
     tex.getFileText()
   )
   // nekako moram narediti, da bom lahko outputal datoteko po CSV
@@ -63,22 +62,19 @@ if (path.extname(manipulatorManCommander.opts().input) == ".tex") {
   md.CSVstyleAllTitles()
   md.titleAnswerReplaceSpecial()
   md.CSVLineBreaksToHTML()
-  if (
-    manipulatorManCommander.opts().typeOfFile == 3 ||
-    manipulatorManCommander.opts().typeOfFile == 2
-  ) {
+  if (manipulatorOpts.typeOfFile == 3 || manipulatorOpts.typeOfFile == 2) {
     md.csvWriteToFile()
   }
 }
 
-if (path.extname(manipulatorManCommander.opts().input) == ".md") {
+if (path.extname(manipulatorOpts.input) == ".md") {
   const md = new MDManipulator(
-    manipulatorManCommander.opts().input,
-    manipulatorManCommander.opts().fileName,
+    manipulatorOpts.input,
+    manipulatorOpts.fileName,
     // tukaj imam težave, saj ne naredi pravilnega taga
     // verjetno je problem v konstruktorju
-    manipulatorManCommander.opts().ankiTag,
-    manipulatorManCommander.opts().run
+    manipulatorOpts.ankiTag,
+    manipulatorOpts.run
   )
   // nekako moram narediti, da bom lahko outputal datoteko po CSV
   // md.replaceMathExpression()
@@ -88,10 +84,8 @@ if (path.extname(manipulatorManCommander.opts().input) == ".md") {
   md.CSVstyleAllTitles()
   md.titleAnswerReplaceSpecial()
   md.CSVLineBreaksToHTML()
-  if (
-    manipulatorManCommander.opts().typeOfFile == 2 ||
-    manipulatorManCommander.opts().typeOfFile == 3
-  ) {
+
+  if (manipulatorOpts.typeOfFile == 2 || manipulatorOpts.typeOfFile == 3) {
     md.csvWriteToFile()
   }
 }
