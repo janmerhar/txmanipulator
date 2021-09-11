@@ -2,7 +2,7 @@ import * as fs from "fs"
 import * as child_process from "child_process"
 import csvStringify from "csv-stringify"
 import * as path from "path"
-const hljs = require("highlight.js")
+import hljs from "highlight.js"
 
 class MDManipulator {
   filePath: any
@@ -46,7 +46,7 @@ class MDManipulator {
     }
   }
 
-  replaceMathExpression(isVaried: boolean = true) {
+  replaceMathExpression(isVaried: boolean = true): void {
     if (isVaried) {
       // option for inline and multiline math => not obsidian friendly
       this.fileText = this.fileText
@@ -54,11 +54,6 @@ class MDManipulator {
         .join("$")
         .split(/\s*\\\)/)
         .join("$")
-      this.fileText = this.fileText
-        .split(/\\\[\s*/)
-        .join("$$")
-        .split(/\s*\\\]/)
-        .join("$$")
     } else {
       // option for multiline only => obsidian friendly
       this.fileText = this.fileText
@@ -66,15 +61,17 @@ class MDManipulator {
         .join("$$")
         .split(/\s*\\\)/)
         .join("$$")
-      this.fileText = this.fileText
-        .split(/\\\[\s*/)
-        .join("$$")
-        .split(/\s*\\\]/)
-        .join("$$")
     }
+
+    // transforming multiline math expressions to $$ syntax
+    this.fileText = this.fileText
+      .split(/\\\[\s*/)
+      .join("$$")
+      .split(/\s*\\\]/)
+      .join("$$")
   }
 
-  clozeDetection(text: string, counter: number) {
+  clozeDetection(text: string, counter: number): string {
     let clozedText = text.replace(/\{\{(.)*\}\}/g, (a, b) => {
       a = a.replace(/[\{\}]/g, "")
       const output = `{{c${counter}::${a}}}`
@@ -84,7 +81,7 @@ class MDManipulator {
     return clozedText
   }
 
-  imageDetection() {
+  imageDetection(): void {
     let urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g
     let imageFormats = [
       "JPEG",
@@ -117,11 +114,12 @@ class MDManipulator {
 
   // syntax styles availble at
   // https://github.com/highlightjs/highlight.js/blob/main/src/styles/atom-one-dark.css
-  codeDetection() {
+  codeDetection(): void {
     // /s allows operator . to match newlines
     const topCodeRegex = /```[a-z]+\r*\n/gs
 
     let topSplit = this.fileText.split(topCodeRegex)
+
     if (topSplit) {
       topSplit.forEach((el: string, index: number) => {
         if (el.match("```")) {
@@ -137,6 +135,7 @@ class MDManipulator {
         }
       })
     }
+
     // cleaning out MD ``` code syntax
     this.fileText = this.fileText
       .split(/```[a-z]+\r*\n/)
@@ -145,7 +144,7 @@ class MDManipulator {
       .join("\n")
   }
 
-  fillCsvData2() {
+  fillCsvData2(): void {
     // splitting document into lines
     const lines = this.fileText.split(/\r*\n/g)
     // creating an array of indexes
@@ -169,11 +168,9 @@ class MDManipulator {
       GAINING ANSWERS TO ADD TO QUESTION
     */
     iQuestions.forEach((question, index) => {
-      // reading current question
-      let questionText = questions[question]
-
       let iStart = iQuestions[index] + 1 + 1
       let iEnd = iQuestions[index + 1] || lines.length
+
       let questionAnswers = [
         String(lines[question]),
         lines.slice(iStart, iEnd).join("\n").trim(),
@@ -184,7 +181,10 @@ class MDManipulator {
     })
   }
 
-  csvWriteToFile(writePath = this.fileName, writeExtension = "csv") {
+  csvWriteToFile(
+    writePath: string = this.fileName,
+    writeExtension: string = "csv"
+  ): void {
     csvStringify(
       this.randomizeArray(this.csvData),
       {
@@ -194,19 +194,20 @@ class MDManipulator {
       (err: any, csvToWrite: any) => {
         if (err) {
           throw err
-        } else {
-          fs.writeFileSync(writePath + "." + writeExtension, csvToWrite)
-          // opening Anki desktop application with a prompt for inporting current CSV file
-          // Anki should be running before we can pass CLI parameter for import
-          if (this.runPrograms == 1) {
-            child_process.exec(`anki &`, (err: any) => {})
-            child_process.exec(`anki ${writePath + "." + writeExtension}`)
-          }
+        }
+
+        fs.writeFileSync(writePath + "." + writeExtension, csvToWrite)
+        // opening Anki desktop application with a prompt for inporting current CSV file
+        // Anki should be running before we can pass CLI parameter for import
+        if (this.runPrograms == 1) {
+          child_process.exec(`anki &`)
+          child_process.exec(`anki ${writePath + "." + writeExtension}`)
         }
       }
     )
   }
-  randomizeArray(inputArray: [any]) {
+
+  randomizeArray(inputArray: any[]): any[] {
     let array = [...inputArray]
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * i)
@@ -239,9 +240,8 @@ class MDManipulator {
   addHTML(element: string, tag: string, classes: string[]): string {
     let openingTag = `<${tag} class="`
 
-    for (let i = 0; i < classes.length; i++) {
-      openingTag += " " + classes[i]
-    }
+    openingTag += classes.join(" ")
+
     openingTag += `">`
     openingTag += element
     openingTag += `</${tag}>`
@@ -307,7 +307,7 @@ class MDManipulator {
     })
   }
 
-  CSVLineBreaksToHTML() {
+  CSVLineBreaksToHTML(): void {
     this.csvData.map((element: string[]) => {
       element[0] = element[0].split(/\r*\n/).join("<br />")
       element[1] = element[1].split(/\r*\n/).join("<br />")
@@ -329,7 +329,6 @@ class MDManipulator {
     // uprabim funckijo title replace in poznere answer replace
     this.csvData.map((element: string[], index: number) => {
       element[0] = this.titleReplaceSpecial(element[0])
-      // answerReplaceSpecial(element[1])
       element[1] = this.answerReplaceSpecial(element[1])
       return element
     })
@@ -344,9 +343,9 @@ class MDManipulator {
     if (definition) {
       // capatilizing first letter in string
       let replacementString = definition[1].trim()
-      // definition[1].charAt(0) = definition[1].charAt(0).toUpperCase()
       replacementString =
         replacementString.charAt(0).toUpperCase() + replacementString.slice(1)
+
       newElement = newElement
         .split(definition[0])
         .join(
