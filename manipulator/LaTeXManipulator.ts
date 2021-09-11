@@ -1,7 +1,6 @@
 import * as fs from "fs"
 import * as child_process from "child_process"
 import * as path from "path"
-import { exit } from "process"
 
 class LaTeXManipulator {
   filePath: any
@@ -36,6 +35,7 @@ class LaTeXManipulator {
       .trim()
     this.runPrograms = runPrograms
   }
+
   getFileText() {
     return this.fileText
   }
@@ -49,12 +49,12 @@ class LaTeXManipulator {
     return this.tag
   }
 
-  prepareTex() {
+  prepareTex(): void {
     this.fileText = this.fileText.split(/\n{3,}/g).join("\n\n")
     this.fileText = this.fileText.split(/(\r\n){3,}/g).join("\r\n\r\n")
   }
 
-  prepareTag(fileName: string) {
+  prepareTag(fileName: string): string {
     let words = fileName.split(" ")
     const num = words[words.length - 1]
     words.length -= 1
@@ -65,13 +65,13 @@ class LaTeXManipulator {
   }
 
   // RegEx ukazi
-  removeEndlines() {
+  removeEndlines(): void {
     // cleaning reamaining endlines
-    this.fileText = this.fileText.split(/\s*\\\\\s*\r\n/g).join("\r\n")
+    this.fileText = this.fileText.split(/\s*\\\\\s*\r\n/g).join("\n")
     this.fileText = this.fileText.split(/\s*\\\\\s*\n/g).join("\n")
   }
 
-  removeSections() {
+  removeSections(): void {
     // cleaning extra \n before \section tag
     // this.fileText = this.fileText.split(/\n{3,}\\section/).join(/\n\n\\section/)
     this.fileText = this.fileText.replace(
@@ -84,18 +84,18 @@ class LaTeXManipulator {
     )
   }
 
-  removeDoubleEmptyLines() {
+  removeDoubleEmptyLines(): void {
     this.fileText = this.fileText.split(/\n{5,}/g).join("")
     this.fileText = this.fileText.split(/(\r\n){5,}/g).join("")
     // odstranim na začetku dokumenta
     this.fileText = this.fileText.replace(/\n+/, "")
   }
 
-  removeTabs() {
+  removeTabs(): void {
     this.fileText = this.fileText.split(/[ ]{4}/g).join("")
   }
 
-  removeLaTeX() {
+  removeLaTeX(): void {
     // odstranim \documentclass
     this.fileText = this.fileText.split(/\\documentclass\{.*\}/).join("")
     // odstranim title, author, date
@@ -118,7 +118,7 @@ class LaTeXManipulator {
     // odstranim \userpackage
     this.fileText = this.fileText.split(/\\usepackage\{.*\}(\n)*/).join("")
   }
-  prepareMd() {
+  prepareMd(): void {
     // adding master # for title that is extracted from -t flag
     this.fileText = `# ${this.fileTitle}\n\n${this.fileText}`
 
@@ -127,14 +127,17 @@ class LaTeXManipulator {
     // fileText = this.replaceMathExpression(fileText, true)
   }
 
-  removeLaTeXComments() {
+  removeLaTeXComments(): void {
     this.fileText = this.fileText
       .split(/(\r*\n)*\s*%.*\r*\n/)
       .join(" ")
       .trim()
   }
 
-  writeToFile(writePath = this.fileName, writeExtension = "md") {
+  writeToFile(
+    writePath: string = this.fileName,
+    writeExtension: string = "md"
+  ): void {
     let writtenFile = "LOG_" + writePath + "." + writeExtension
     fs.writeFileSync(writtenFile, this.fileText)
 
