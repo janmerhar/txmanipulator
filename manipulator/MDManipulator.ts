@@ -21,29 +21,19 @@ class MDManipulator {
   ) {
     this.csvData = []
     this.runPrograms = runPrograms
-    // when input text is from LaTeXManipulator class
-    if (fileText != "") {
-      this.filePath = filePath
-      this.fileName = fileName
-      this.tag = tag
-      this.runPrograms = runPrograms
-      this.fileText = fileText
-    }
-    // when there is no input String for fileText
-    else {
-      this.filePath = filePath
-      this.fileText = fs.readFileSync(filePath, "utf-8")
-      this.fileName =
-        fileName || path.basename(filePath).replace(path.extname(filePath), "")
+    this.filePath = filePath
+    this.fileName =
+      fileName || path.basename(filePath).replace(path.extname(filePath), "")
+    this.runPrograms = runPrograms
+    this.fileText = fileText || fs.readFileSync(filePath, "utf-8")
 
-      const fileNameSplitted = this.fileName.split("_")
-      this.tag =
-        tag && tag.length > 0
-          ? tag
-          : fileNameSplitted.length == 3
-          ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
-          : ""
-    }
+    const fileNameSplitted = this.fileName.split("_")
+    this.tag =
+      tag && tag.length > 0
+        ? tag
+        : fileNameSplitted.length == 3
+        ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
+        : ""
   }
 
   replaceMathExpression(isVaried: boolean = true): void {

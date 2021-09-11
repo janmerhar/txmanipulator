@@ -5,6 +5,7 @@ import { LaTeXManipulator } from "../manipulator/LaTeXManipulator"
 import { MDManipulator } from "../manipulator/MDManipulator"
 
 const manipulatorOpts = manipulatorManCommander.opts()
+const extensionName = path.extname(manipulatorOpts.input)
 
 /*
     NAČRT: 
@@ -23,7 +24,7 @@ const manipulatorOpts = manipulatorManCommander.opts()
  * Writing MD file
  * Calling MDManipulator
  */
-if (path.extname(manipulatorOpts.input) == ".tex") {
+if (extensionName == ".tex") {
   const tex = new LaTeXManipulator(
     manipulatorOpts.input,
     manipulatorOpts.fileName,
@@ -62,12 +63,13 @@ if (path.extname(manipulatorOpts.input) == ".tex") {
   md.CSVstyleAllTitles()
   md.titleAnswerReplaceSpecial()
   md.CSVLineBreaksToHTML()
+
   if (manipulatorOpts.typeOfFile == 3 || manipulatorOpts.typeOfFile == 2) {
     md.csvWriteToFile()
   }
 }
 
-if (path.extname(manipulatorOpts.input) == ".md") {
+if (extensionName == ".md") {
   const md = new MDManipulator(
     manipulatorOpts.input,
     manipulatorOpts.fileName,
