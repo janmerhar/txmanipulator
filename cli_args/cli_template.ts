@@ -17,7 +17,7 @@ templateCommander.requiredOption(
 // add --anki-tag -atag for custom tags that are not derived from \title
 templateCommander
   .option(
-    "-f, --file-name <strings...>",
+    "-f, --file-name <string...>",
     "Name of the LaTeX output file",
     CommandFunctions.filenameOffDirStructure()
   )
