@@ -1,6 +1,5 @@
 import * as child_process from "child_process"
 import * as fs from "fs"
-import { templateCommander } from "../cli_args/cli_template"
 import * as path from "path"
 
 class LaTeXTemplate {
@@ -14,43 +13,55 @@ class LaTeXTemplate {
 
   // adding elements to latex document
   // packages array of package names
-  setPackages(packages: Array<string> = []) {
+  setPackages(packages: string[] = []): LaTeXTemplate {
     this.fileText +=
       "\\usepackage{amsfonts, amsmath, amssymb}\n\\usepackage{xparse}\n"
     packages = packages.map((aPackage: string) => {
       return `\\usepackage{${aPackage}}\n`
     })
     this.fileText += packages.join("") + `\n`
+
+    return this
   }
 
-  setTitleData(author: string, date: string, title: string) {
+  setTitleData(author: string, date: string, title: string): LaTeXTemplate {
     this.fileText += `\\author{ ${author} }\n`
     this.fileText += `\\date{ ${date} }\n`
     this.fileText += `\\title{ ${title} }\n`
+
+    return this
   }
 
-  setBeginDocument() {
+  setBeginDocument(): LaTeXTemplate {
     this.fileText += `\n\\begin{document}\n`
     this.fileText += `\\maketitle\n`
+
+    return this
   }
 
-  setSections(number = 30) {
+  setSections(number: number = 30): LaTeXTemplate {
     this.fileText += `    \\section*{  }\n\n`.repeat(number)
+
+    return this
   }
 
-  setEndDocument() {
+  setEndDocument(): LaTeXTemplate {
     this.fileText += `\\end{document}`
+
+    return this
   }
 
-  writeToFile(writePath = this.fileName) {
+  writeToFile(writePath: string = this.fileName): LaTeXTemplate {
     this.setEndDocument()
 
     fs.writeFileSync(writePath + "." + "tex", this.fileText)
+
+    return this
   }
   // dokončaj, da se bo odprla mapa, kjer bo shranjen LaTeX dokument
   // zaenkrat deluje samo odpiranje v urejevalniku
   // in še to samo kreirani dokument, želim pa ciljno mapo, da bom lažje začel urejati dokumente
-  openCreatedDocument(program = "code") {
+  openCreatedDocument(program = "code"): LaTeXTemplate {
     child_process.exec(
       `${program} ${path.dirname(path.join(process.cwd(), this.fileName))}`,
       (err: any) => {
@@ -66,20 +77,8 @@ class LaTeXTemplate {
         )
       }
     )
+    return this
   }
 }
-
-// const latex = new LaTeXTemplate(templateCommander.opts().fileName)
-
-// latex.setPackages(templateCommander.opts().packages)
-// latex.setTitleData(
-//   templateCommander.opts().author,
-//   templateCommander.opts().date,
-//   templateCommander.opts().title
-// )
-// latex.setBeginDocument()
-// latex.setSections(templateCommander.opts().sections)
-// latex.writeToFile()
-// latex.openCretedDocument()
 
 export { LaTeXTemplate }
