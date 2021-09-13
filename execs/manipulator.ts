@@ -7,18 +7,6 @@ import { MDManipulator } from "../manipulator/MDManipulator"
 const manipulatorOpts = manipulatorManCommander.opts()
 const extensionName = path.extname(manipulatorOpts.input)
 
-/*
-    NAČRT: 
-    - tex
-        1) prečiščim datoteko
-        2) pošljem v mdman
-        3) naredi izpise
-    - md 
-        1) preberem datoteko
-        2) naredim CSV
-        3) zaženem Anki
-*/
-
 /**
  * Cleaning LaTeX document
  * Writing MD file
@@ -33,12 +21,13 @@ if (extensionName == ".tex") {
     manipulatorOpts.run
   )
 
-  tex.removeEndlines()
-  tex.removeTabs()
-  tex.removeSections()
-  tex.removeLaTeX()
-  tex.removeDoubleEmptyLines()
-  tex.removeLaTeXComments()
+  tex
+    .removeEndlines()
+    .removeTabs()
+    .removeSections()
+    .removeLaTeX()
+    .removeDoubleEmptyLines()
+    .removeLaTeXComments()
 
   // mogoče je še prezgodaj
   // in to raje naredim v MDManipulator
@@ -58,11 +47,11 @@ if (extensionName == ".tex") {
   // nekako moram narediti, da bom lahko outputal datoteko po CSV
   // md.replaceMathExpression()
   md.imageDetection()
-  md.codeDetection()
-  md.fillCsvData2()
-  md.CSVstyleAllTitles()
-  md.titleAnswerReplaceSpecial()
-  md.CSVLineBreaksToHTML()
+    .codeDetection()
+    .fillCsvData2()
+    .CSVstyleAllTitles()
+    .titleAnswerReplaceSpecial()
+    .CSVLineBreaksToHTML()
 
   if (manipulatorOpts.typeOfFile == 3 || manipulatorOpts.typeOfFile == 2) {
     md.csvWriteToFile()
@@ -81,11 +70,11 @@ if (extensionName == ".md") {
   // nekako moram narediti, da bom lahko outputal datoteko po CSV
   // md.replaceMathExpression()
   md.imageDetection()
-  md.codeDetection()
-  md.fillCsvData2()
-  md.CSVstyleAllTitles()
-  md.titleAnswerReplaceSpecial()
-  md.CSVLineBreaksToHTML()
+    .codeDetection()
+    .fillCsvData2()
+    .CSVstyleAllTitles()
+    .titleAnswerReplaceSpecial()
+    .CSVLineBreaksToHTML()
 
   if (manipulatorOpts.typeOfFile == 2 || manipulatorOpts.typeOfFile == 3) {
     md.csvWriteToFile()
