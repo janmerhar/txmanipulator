@@ -36,7 +36,7 @@ class MDManipulator {
         : ""
   }
 
-  replaceMathExpression(isVaried: boolean = true): void {
+  replaceMathExpression(isVaried: boolean = true): MDManipulator {
     if (isVaried) {
       // option for inline and multiline math => not obsidian friendly
       this.fileText = this.fileText
@@ -59,6 +59,8 @@ class MDManipulator {
       .join("$$")
       .split(/\s*\\\]/)
       .join("$$")
+
+    return this
   }
 
   clozeDetection(text: string, counter: number): string {
@@ -71,7 +73,7 @@ class MDManipulator {
     return clozedText
   }
 
-  imageDetection(): void {
+  imageDetection(): MDManipulator {
     let urlRegex = /(((https?:\/\/)|(www\.))[^\s]+)/g
     let imageFormats = [
       "JPEG",
@@ -100,11 +102,13 @@ class MDManipulator {
         }
       })
     }
+
+    return this
   }
 
   // syntax styles availble at
   // https://github.com/highlightjs/highlight.js/blob/main/src/styles/atom-one-dark.css
-  codeDetection(): void {
+  codeDetection(): MDManipulator {
     // /s allows operator . to match newlines
     const topCodeRegex = /```[a-z]+\r*\n/gs
 
@@ -132,9 +136,11 @@ class MDManipulator {
       .join("\n")
       .split("```")
       .join("\n")
+
+    return this
   }
 
-  fillCsvData2(): void {
+  fillCsvData2(): MDManipulator {
     // splitting document into lines
     const lines = this.fileText.split(/\r*\n/g)
     // creating an array of indexes
@@ -169,12 +175,14 @@ class MDManipulator {
 
       this.csvData.push(questionAnswers)
     })
+
+    return this
   }
 
   csvWriteToFile(
     writePath: string = this.fileName,
     writeExtension: string = "csv"
-  ): void {
+  ): MDManipulator {
     csvStringify(
       this.randomizeArray(this.csvData),
       {
@@ -195,6 +203,8 @@ class MDManipulator {
         }
       }
     )
+
+    return this
   }
 
   randomizeArray(inputArray: any[]): any[] {
@@ -282,7 +292,7 @@ class MDManipulator {
   }
 
   // function that automates title styling
-  CSVstyleAllTitles(): void {
+  CSVstyleAllTitles(): MDManipulator {
     // element is 2D array [question, answer(s)]
     this.csvData.map((element: string[]) => {
       let titleCount = this.numOfTitles(element[0])
@@ -295,13 +305,17 @@ class MDManipulator {
 
       return element
     })
+
+    return this
   }
 
-  CSVLineBreaksToHTML(): void {
+  CSVLineBreaksToHTML(): MDManipulator {
     this.csvData.map((element: string[]) => {
       element[0] = element[0].split(/\r*\n/).join("<br />")
       element[1] = element[1].split(/\r*\n/).join("<br />")
     })
+
+    return this
   }
 
   titleReplaceSpecial(element: string): string {
@@ -315,13 +329,15 @@ class MDManipulator {
     return element
   }
 
-  titleAnswerReplaceSpecial(): void {
+  titleAnswerReplaceSpecial(): MDManipulator {
     // uprabim funckijo title replace in poznere answer replace
     this.csvData.map((element: string[], index: number) => {
       element[0] = this.titleReplaceSpecial(element[0])
       element[1] = this.answerReplaceSpecial(element[1])
       return element
     })
+
+    return this
   }
 
   // searches for lines that star with ::
