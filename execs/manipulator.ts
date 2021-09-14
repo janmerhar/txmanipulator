@@ -39,10 +39,10 @@ if (extensionName == ".tex") {
 
   const md = new MDManipulator(
     manipulatorOpts.input,
-    tex.getFileName(),
-    tex.getTagName(),
+    tex.fileName,
+    tex.tag,
     manipulatorOpts.run,
-    tex.getFileText()
+    tex.fileText
   )
   // nekako moram narediti, da bom lahko outputal datoteko po CSV
   // md.replaceMathExpression()

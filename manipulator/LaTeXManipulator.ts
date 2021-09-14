@@ -44,19 +44,6 @@ class LaTeXManipulator {
     return newTag
   }
 
-  getFileText() {
-    return this.fileText
-  }
-  getFilePath() {
-    return this.filePath
-  }
-  getFileName() {
-    return this.fileName
-  }
-  getTagName() {
-    return this.tag
-  }
-
   prepareTex(): LaTeXManipulator {
     this.fileText = this.fileText.split(/\n{3,}/).join("\n\n")
     this.fileText = this.fileText.split(/(\r\n){3,}/).join("\r\n\r\n")
