@@ -21,13 +21,7 @@ class LaTeXManipulator {
     this.fileName =
       fileName || path.basename(filePath).replace(path.extname(filePath), "")
 
-    const fileNameSplitted = this.fileName.split("_")
-    this.tag =
-      tag && tag.length > 0
-        ? tag
-        : fileNameSplitted.length == 3
-        ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
-        : ""
+    this.tag = this.generateTag(tag)
 
     this.fileTitle = this.fileText
       .match(/\\title\{(.)*\}/gi)[0]
@@ -36,6 +30,18 @@ class LaTeXManipulator {
       .trim()
 
     this.runPrograms = runPrograms
+  }
+
+  generateTag(tag: string): string {
+    const fileNameSplitted = this.fileName.split("_")
+    const newTag =
+      tag && tag.length > 0
+        ? tag
+        : fileNameSplitted.length == 3
+        ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
+        : ""
+
+    return newTag
   }
 
   getFileText() {
@@ -52,8 +58,8 @@ class LaTeXManipulator {
   }
 
   prepareTex(): LaTeXManipulator {
-    this.fileText = this.fileText.split(/\n{3,}/g).join("\n\n")
-    this.fileText = this.fileText.split(/(\r\n){3,}/g).join("\r\n\r\n")
+    this.fileText = this.fileText.split(/\n{3,}/).join("\n\n")
+    this.fileText = this.fileText.split(/(\r\n){3,}/).join("\r\n\r\n")
 
     return this
   }
@@ -72,8 +78,8 @@ class LaTeXManipulator {
   // RegEx ukazi
   removeEndlines(): LaTeXManipulator {
     // cleaning reamaining endlines
-    this.fileText = this.fileText.split(/\s*\\\\\s*\r\n/g).join("\n")
-    this.fileText = this.fileText.split(/\s*\\\\\s*\n/g).join("\n")
+    this.fileText = this.fileText.split(/\s*\\\\\s*\r\n/).join("\n")
+    this.fileText = this.fileText.split(/\s*\\\\\s*\n/).join("\n")
 
     return this
   }
@@ -93,8 +99,8 @@ class LaTeXManipulator {
   }
 
   removeDoubleEmptyLines(): LaTeXManipulator {
-    this.fileText = this.fileText.split(/\n{5,}/g).join("")
-    this.fileText = this.fileText.split(/(\r\n){5,}/g).join("")
+    this.fileText = this.fileText.split(/\n{5,}/).join("")
+    this.fileText = this.fileText.split(/(\r\n){5,}/).join("")
     // odstranim na začetku dokumenta
     this.fileText = this.fileText.trim()
 
@@ -102,7 +108,7 @@ class LaTeXManipulator {
   }
 
   removeTabs(): LaTeXManipulator {
-    this.fileText = this.fileText.split(/[ ]{4}/g).join("")
+    this.fileText = this.fileText.split(/[ ]{4}/).join("")
 
     return this
   }

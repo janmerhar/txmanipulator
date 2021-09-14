@@ -26,14 +26,19 @@ class MDManipulator {
       fileName || path.basename(filePath).replace(path.extname(filePath), "")
     this.runPrograms = runPrograms
     this.fileText = fileText || fs.readFileSync(filePath, "utf-8")
+    this.tag = this.generateTag(tag)
+  }
 
+  generateTag(tag: string): string {
     const fileNameSplitted = this.fileName.split("_")
-    this.tag =
+    const newTag =
       tag && tag.length > 0
         ? tag
         : fileNameSplitted.length == 3
         ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
         : ""
+
+    return newTag
   }
 
   replaceMathExpression(isVaried: boolean = true): MDManipulator {
@@ -238,15 +243,15 @@ class MDManipulator {
   // function that encaspuslates text within passed tags and class parameters
   // needed implementation in case of non array like classes parametre
   addHTML(element: string, tag: string, classes: string[]): string {
-    let openingTag = `<${tag} class="`
+    let encapsulatedHTML = `<${tag} class="`
 
-    openingTag += classes.join(" ")
+    encapsulatedHTML += classes.join(" ")
 
-    openingTag += `">`
-    openingTag += element
-    openingTag += `</${tag}>`
+    encapsulatedHTML += `">`
+    encapsulatedHTML += element
+    encapsulatedHTML += `</${tag}>`
 
-    return openingTag
+    return encapsulatedHTML
   }
 
   modify3Titles(title: string): string {
