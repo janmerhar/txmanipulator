@@ -324,8 +324,14 @@ class MDManipulator {
   }
 
   titleReplaceSpecial(element: string): string {
+    /*
+      ZAČASNO ZAKOMENTIRAM DOKLER NE NAREDIM BOLJŠE REŠITVE
+
     const oldCharacters = [":", "=>"]
     const newCharacters = ["\\(:\\)", "\\(\\Rightarrow\\)"]
+    */
+    const oldCharacters = ["=>"]
+    const newCharacters = ["\\(\\Rightarrow\\)"]
 
     oldCharacters.forEach((character, index) => {
       element = element.split(character).join(newCharacters[index])
