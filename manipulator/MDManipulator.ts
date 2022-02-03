@@ -275,7 +275,7 @@ class MDManipulator {
       ])}`,
     }
 
-    return newTitles.title1 + newTitles.title2 + newTitles.title3
+    return `${newTitles.title1}<br />${newTitles.title2}<br />${newTitles.title3}`
   }
 
   modify2Titles(title: string): string {
@@ -293,7 +293,8 @@ class MDManipulator {
       ])}`,
     }
 
-    return newTitles.title1 + newTitles.title2
+    // return newTitles.title1 + newTitles.title2
+    return `${newTitles.title1}<br />${newTitles.title2}`
   }
 
   // function that automates title styling
