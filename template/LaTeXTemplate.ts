@@ -7,7 +7,7 @@ class LaTeXTemplate {
   fileText: string
 
   constructor(fileName: string) {
-    this.fileName = fileName
+    this.fileName = fileName[0]
     this.fileText = "\\documentclass{article}\n"
   }
 
@@ -51,32 +51,35 @@ class LaTeXTemplate {
     return this
   }
 
-  writeToFile(writePath: string = this.fileName): LaTeXTemplate {
+  writeToFile(): LaTeXTemplate {
     this.setEndDocument()
+    const outputFileName =
+      path.extname(this.fileName).length == 0
+        ? this.fileName + ".tex"
+        : this.fileName
+    const outputFile = path.join(process.cwd(), outputFileName)
+    const outputDir = process.cwd()
 
-    fs.writeFileSync(writePath + "." + "tex", this.fileText)
+    fs.writeFileSync(outputFileName, this.fileText)
 
     return this
   }
-  // dokončaj, da se bo odprla mapa, kjer bo shranjen LaTeX dokument
-  // zaenkrat deluje samo odpiranje v urejevalniku
-  // in še to samo kreirani dokument, želim pa ciljno mapo, da bom lažje začel urejati dokumente
+
   openCreatedDocument(program = "code"): LaTeXTemplate {
-    child_process.exec(
-      `${program} ${path.dirname(path.join(process.cwd(), this.fileName))}`,
-      (err: any) => {
+    const outputFileName =
+      path.extname(this.fileName).length == 0
+        ? this.fileName + ".tex"
+        : this.fileName
+    const outputFile = path.join(process.cwd(), outputFileName)
+    const outputDir = process.cwd()
+
+    child_process.exec(`${program} ${outputDir} &`, (err: any) => {
+      if (err) console.log("Failed opening document!")
+
+      child_process.exec(`${program} ${outputFile}`, (err: any) => {
         if (err) console.log("Failed opening document!")
-        child_process.exec(
-          `${program} ${path.join(
-            path.dirname(path.join(process.cwd(), this.fileName)),
-            this.fileName + "." + "tex"
-          )}`,
-          (err: any) => {
-            if (err) console.log("Failed opening document!")
-          }
-        )
-      }
-    )
+      })
+    })
     return this
   }
 }
