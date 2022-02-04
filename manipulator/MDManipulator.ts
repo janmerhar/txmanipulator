@@ -65,6 +65,7 @@ class MDManipulator {
       .split(/\s*\\\]/)
       .join("$$")
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -94,6 +95,8 @@ class MDManipulator {
     ]
 
     let matches = this.fileText.match(urlRegex)
+    // Preveri, da je matchana slika in ne le link
+    // Ce je navaden link, ga ustrezno popravi
     if (matches) {
       matches.forEach((match: string) => {
         let extension = path.extname(match).split(".")[1]
@@ -108,6 +111,7 @@ class MDManipulator {
       })
     }
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -142,6 +146,7 @@ class MDManipulator {
       .split("```")
       .join("\n")
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -181,6 +186,7 @@ class MDManipulator {
       this.csvData.push(questionAnswers)
     })
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -209,6 +215,7 @@ class MDManipulator {
       }
     )
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -312,6 +319,7 @@ class MDManipulator {
       return element
     })
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -321,6 +329,7 @@ class MDManipulator {
       element[1] = element[1].split(/\r*\n/).join("<br />")
     })
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -349,6 +358,7 @@ class MDManipulator {
       return element
     })
 
+    // NOTE: Returning this for chaining
     return this
   }
 

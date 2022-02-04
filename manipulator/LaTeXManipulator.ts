@@ -48,6 +48,7 @@ class LaTeXManipulator {
     this.fileText = this.fileText.split(/\n{3,}/).join("\n\n")
     this.fileText = this.fileText.split(/(\r\n){3,}/).join("\r\n\r\n")
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -68,6 +69,7 @@ class LaTeXManipulator {
     this.fileText = this.fileText.split(/\s*\\\\\s*\r\n/).join("\n")
     this.fileText = this.fileText.split(/\s*\\\\\s*\n/).join("\n")
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -82,6 +84,7 @@ class LaTeXManipulator {
       }
     )
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -91,12 +94,14 @@ class LaTeXManipulator {
     // odstranim na začetku dokumenta
     this.fileText = this.fileText.trim()
 
+    // NOTE: Returning this for chaining
     return this
   }
 
   removeTabs(): LaTeXManipulator {
     this.fileText = this.fileText.split(/[ ]{4}/).join("")
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -123,6 +128,7 @@ class LaTeXManipulator {
     // odstranim \userpackage
     this.fileText = this.fileText.split(/\\usepackage\{.*\}(\n)*/).join("")
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -134,6 +140,7 @@ class LaTeXManipulator {
     // not needed for now
     // fileText = this.replaceMathExpression(fileText, true)
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -143,6 +150,7 @@ class LaTeXManipulator {
       .join(" ")
       .trim()
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -168,6 +176,7 @@ class LaTeXManipulator {
         })
       })
     }
+    // NOTE: Returning this for chaining
     return this
   }
 }

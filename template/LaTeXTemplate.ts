@@ -21,6 +21,7 @@ class LaTeXTemplate {
     })
     this.fileText += packages.join("") + `\n`
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -29,6 +30,7 @@ class LaTeXTemplate {
     this.fileText += `\\date{ ${date} }\n`
     this.fileText += `\\title{ ${title} }\n`
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -36,18 +38,21 @@ class LaTeXTemplate {
     this.fileText += `\n\\begin{document}\n`
     this.fileText += `\\maketitle\n`
 
+    // NOTE: Returning this for chaining
     return this
   }
 
   setSections(number: number = 30): LaTeXTemplate {
     this.fileText += `    \\section*{  }\n\n`.repeat(number)
 
+    // NOTE: Returning this for chaining
     return this
   }
 
   setEndDocument(): LaTeXTemplate {
     this.fileText += `\\end{document}`
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -62,6 +67,7 @@ class LaTeXTemplate {
 
     fs.writeFileSync(outputFileName, this.fileText)
 
+    // NOTE: Returning this for chaining
     return this
   }
 
@@ -80,6 +86,7 @@ class LaTeXTemplate {
         if (err) console.log("Failed opening document!")
       })
     })
+    // NOTE: Returning this for chaining
     return this
   }
 }
