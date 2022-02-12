@@ -7,7 +7,7 @@ class CommandFunctions {
   }
 
   static joinThings(value: any, previous: any): string {
-    return `${previous || ""} ${value}`.trim()
+    return `${previous ?? ""} ${value}`.trim()
   }
 
   static lowerCase(value: string, dummyPrevious: any): string {
@@ -15,7 +15,7 @@ class CommandFunctions {
   }
 
   static fileWithoutExtension(value: string): string {
-    if (path.extname(value).length == 0) {
+    if (path.extname(value).length === 0) {
       return value
     } else {
       return value
@@ -40,7 +40,7 @@ class CommandFunctions {
     if (regex.test(levels.lvl3)) {
       // 2. validacija za lvl1
       if (/^[0-9]+$/.test(levels.lvl1.split("_")[0])) {
-        if (levels.lvl1.split("_")[1].charAt(0) == levels.lvl2.charAt(0)) {
+        if (levels.lvl1.split("_")[1].charAt(0) === levels.lvl2.charAt(0)) {
           fileName = `${levels.lvl1.split("_")[0]}_${levels.lvl3}_${
             levels.lvl1.split("_")[1]
           }`

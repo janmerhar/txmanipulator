@@ -12,7 +12,7 @@ const extensionName = path.extname(manipulatorOpts.input)
  * Writing MD file
  * Calling MDManipulator
  */
-if (extensionName == ".tex") {
+if (extensionName === ".tex") {
   const tex = new LaTeXManipulator(
     manipulatorOpts.input,
     manipulatorOpts.fileName,
@@ -33,7 +33,7 @@ if (extensionName == ".tex") {
   // in to raje naredim v MDManipulator
   // tex.prepareMd()
 
-  if (manipulatorOpts.typeOfFile == 1 || manipulatorOpts.typeOfFile == 3) {
+  if (manipulatorOpts.typeOfFile === 1 ?? manipulatorOpts.typeOfFile === 3) {
     tex.writeToFile()
   }
 
@@ -53,12 +53,12 @@ if (extensionName == ".tex") {
     .titleAnswerReplaceSpecial()
     .CSVLineBreaksToHTML()
 
-  if (manipulatorOpts.typeOfFile == 3 || manipulatorOpts.typeOfFile == 2) {
+  if (manipulatorOpts.typeOfFile === 3 ?? manipulatorOpts.typeOfFile === 2) {
     md.csvWriteToFile()
   }
 }
 
-if (extensionName == ".md") {
+if (extensionName === ".md") {
   const md = new MDManipulator(
     manipulatorOpts.input,
     manipulatorOpts.fileName,
@@ -76,7 +76,7 @@ if (extensionName == ".md") {
     .titleAnswerReplaceSpecial()
     .CSVLineBreaksToHTML()
 
-  if (manipulatorOpts.typeOfFile == 2 || manipulatorOpts.typeOfFile == 3) {
+  if (manipulatorOpts.typeOfFile === 2 ?? manipulatorOpts.typeOfFile === 3) {
     md.csvWriteToFile()
   }
 }

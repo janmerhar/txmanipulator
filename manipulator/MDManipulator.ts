@@ -23,9 +23,9 @@ class MDManipulator {
     this.runPrograms = runPrograms
     this.filePath = filePath
     this.fileName =
-      fileName || path.basename(filePath).replace(path.extname(filePath), "")
+      fileName ?? path.basename(filePath).replace(path.extname(filePath), "")
     this.runPrograms = runPrograms
-    this.fileText = fileText || fs.readFileSync(filePath, "utf-8")
+    this.fileText = fileText ?? fs.readFileSync(filePath, "utf-8")
     this.tag = this.generateTag(tag)
   }
 
@@ -34,7 +34,7 @@ class MDManipulator {
     const newTag =
       tag && tag.length > 0
         ? tag
-        : fileNameSplitted.length == 3
+        : fileNameSplitted.length === 3
         ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
         : ""
 
@@ -175,7 +175,7 @@ class MDManipulator {
     */
     iQuestions.forEach((question, index) => {
       let iStart = iQuestions[index] + 1 + 1
-      let iEnd = iQuestions[index + 1] || lines.length
+      let iEnd = iQuestions[index + 1] ?? lines.length
 
       let questionAnswers = [
         String(lines[question]),
@@ -208,7 +208,7 @@ class MDManipulator {
         fs.writeFileSync(writePath + "." + writeExtension, csvToWrite)
         // opening Anki desktop application with a prompt for inporting current CSV file
         // Anki should be running before we can pass CLI parameter for import
-        if (this.runPrograms == 1) {
+        if (this.runPrograms === 1) {
           child_process.exec(`anki &`)
           child_process.exec(`anki ${writePath + "." + writeExtension}`)
         }
@@ -310,9 +310,9 @@ class MDManipulator {
     this.csvData.map((element: string[]) => {
       let titleCount = this.numOfTitles(element[0])
 
-      if (titleCount == 3) {
+      if (titleCount === 3) {
         element[0] = this.modify3Titles(element[0])
-      } else if (titleCount == 2) {
+      } else if (titleCount === 2) {
         element[0] = this.modify2Titles(element[0])
       }
 
