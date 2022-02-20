@@ -37,7 +37,7 @@ class LaTeXManipulator {
     const newTag =
       tag && tag.length > 0
         ? tag
-        : fileNameSplitted.length === 3
+        : fileNameSplitted.length == 3
         ? `${fileNameSplitted[1]}-${fileNameSplitted[0]}`
         : ""
 
@@ -79,7 +79,7 @@ class LaTeXManipulator {
       /\r*\n+\\section\*\{(.*)\}/g,
       function (a: string, b: string) {
         // checking if the \section*{} is empty
-        if (b.match(/\w+/) === null) return ""
+        if (b.match(/\w+/) == null) return ""
         return `\n\n\n${b.trim()}\n--------------------------------`
       }
     )
@@ -162,7 +162,7 @@ class LaTeXManipulator {
     fs.writeFileSync(writtenFile, this.fileText)
 
     // odprem datoteko s notepad++ ali notepad ali
-    if (this.runPrograms === 1) {
+    if (this.runPrograms == 1) {
       child_process.exec(`start notepad++ ${writtenFile} &`, (err: any) => {
         if (!err) return
         child_process.exec(`start notepad ${writtenFile} &`, (err: any) => {

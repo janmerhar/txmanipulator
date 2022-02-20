@@ -59,7 +59,7 @@ class LaTeXTemplate {
   writeToFile(): LaTeXTemplate {
     this.setEndDocument()
     const outputFileName =
-      path.extname(this.fileName).length === 0
+      path.extname(this.fileName).length == 0
         ? this.fileName + ".tex"
         : this.fileName
     const outputFile = path.join(process.cwd(), outputFileName)
@@ -73,7 +73,7 @@ class LaTeXTemplate {
 
   openCreatedDocument(program = "code"): LaTeXTemplate {
     const outputFileName =
-      path.extname(this.fileName).length === 0
+      path.extname(this.fileName).length == 0
         ? this.fileName + ".tex"
         : this.fileName
     const outputFile = path.join(process.cwd(), outputFileName)
