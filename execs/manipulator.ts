@@ -33,7 +33,7 @@ if (extensionName == ".tex") {
   // in to raje naredim v MDManipulator
   // tex.prepareMd()
 
-  if (manipulatorOpts.typeOfFile == 1 ?? manipulatorOpts.typeOfFile == 3) {
+  if (manipulatorOpts.typeOfFile == 1 || manipulatorOpts.typeOfFile == 3) {
     tex.writeToFile()
   }
 
@@ -53,7 +53,7 @@ if (extensionName == ".tex") {
     .titleAnswerReplaceSpecial()
     .CSVLineBreaksToHTML()
 
-  if (manipulatorOpts.typeOfFile == 3 ?? manipulatorOpts.typeOfFile == 2) {
+  if (manipulatorOpts.typeOfFile == 3 || manipulatorOpts.typeOfFile == 2) {
     md.csvWriteToFile()
   }
 }
@@ -76,7 +76,7 @@ if (extensionName == ".md") {
     .titleAnswerReplaceSpecial()
     .CSVLineBreaksToHTML()
 
-  if (manipulatorOpts.typeOfFile == 2 ?? manipulatorOpts.typeOfFile == 3) {
+  if (manipulatorOpts.typeOfFile == 2 || manipulatorOpts.typeOfFile == 3) {
     md.csvWriteToFile()
   }
 }
