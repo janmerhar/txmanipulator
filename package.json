@@ -20,7 +20,7 @@
   },
   "name": "txmanipulator",
   "description": "",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "main": "./dist/txmanipulator.js",
   "repository": {
     "type": "git",
