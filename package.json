@@ -1,6 +1,10 @@
 {
   "scripts": {
+    "build": "tsc",
     "compile": "tsc -w"
+  },
+  "bin": {
+    "manipulator": "./dist/bin/manipulator.js"
   },
   "dependencies": {
     "commander": "^7.0.0",
@@ -12,21 +16,21 @@
     "@types/node": "^14.14.27",
     "highlight.js": "^11.1.0"
   },
-  "name": "LaTeX_manipulator",
+  "name": "txmanipulator",
   "description": "",
-  "version": "2.3.0",
-  "main": "manipulator.js",
+  "version": "3.0.0",
+  "main": "./dist/txmanipulator.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/janmerhar/LaTeX_manipulator.git"
+    "url": "git+https://github.com/janmerhar/txmanipulator.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Jan Merhar",
+  "license": "",
   "bugs": {
-    "url": "https://github.com/janmerhar/LaTeX_manipulator/issues"
+    "url": "https://github.com/janmerhar/txmanipulator/issues"
   },
-  "homepage": "https://github.com/janmerhar/LaTeX_manipulator#readme",
+  "homepage": "https://github.com/janmerhar/txmanipulator#readme",
   "nodemonConfig": {
     "ignore": [
       "*.csv",

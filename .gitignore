@@ -26,3 +26,6 @@ _TS
 *.csv
 *.txt
 *.exe
+
+# ignoring compiled TS files in dist folder
+dist
