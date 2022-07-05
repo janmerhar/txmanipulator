@@ -1,8 +1,10 @@
+#!/usr/bin/env node
+
 import path from "path"
 
-import { manipulatorManCommander } from "./cli_args/cli_manipulator"
-import { LaTeXManipulator } from "./manipulator/LaTeXManipulator"
-import { MDManipulator } from "./manipulator/MDManipulator"
+import { manipulatorManCommander } from "../cli_args/cli_manipulator"
+import { LaTeXManipulator } from "../manipulator/LaTeXManipulator"
+import { MDManipulator } from "../manipulator/MDManipulator"
 
 const manipulatorOpts = manipulatorManCommander.opts()
 const extensionName = path.extname(manipulatorOpts.input)
