@@ -1,8 +1,8 @@
 # About The project
 
-This project aims to automate the process of creating Anki cards. To create cards, in batch, you can write a simple LaTeX document which is then transformed into markdown and csv file. The latter is used to be imported into Anki. The former is simplified LaTeX document for reading without compiler LaTeX document.
+This project aims to automate the process of creating Anki cards. To create cards, in batch, you can write a simple LaTeX or Markdown document which is then transformed into markdown and csv file. The latter is used to be imported into Anki. The former is simplified LaTeX document for reading without compiled LaTeX document. You can easily create a LaTeX document using [txtemplate](https://github.com/janmerhar/txtemplate).
 
-Command line interface that transforms LaTeX document into markdown and csv files or simply markdown to csv. The goal of this program is making process of creating Anki cards easier and faster by writing Anki card in a single file which can be easily modified and searched for changes and automatically calling Anki for import. Windows users require for auto importing set Anki environmental variable.
+Command line interface transforms LaTeX document into markdown and csv files or simply markdown to csv. The goal of this program is making process of creating Anki cards easier and faster by writing Anki card in a single file which can be easily modified and searched for changes and automatically calling Anki for import. Windows users need to set Anki environmental variable for auto importing.
 
 ## Built with
 
@@ -48,9 +48,11 @@ npm run build
 
 # Usage
 
-Script is located in `bin` folder. You can run it with `node`. Note, you need to compile TypeScript into JavaScript before you can run them.
+Script is located in `bin` folder. You can run it with `ts-node`. Note, if you want to run JavaScript script, you fill find compiled executable in `dist/bin` folder.
 
 ## Manipulator CLI
+
+To use CLI you need to install package from NPM using `npm install txmanipulator -g`. Afterwards you can run the CLI using `manipulator` command.
 
 ```
 Usage: manipulator [options]
