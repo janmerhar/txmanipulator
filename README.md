@@ -69,6 +69,10 @@ Options:
   -h, --help                     display help for command
 ```
 
+# Usage example
+
+![Usage example](documentation/txmanipulator_cli_example.gif?raw=true "Usage example")
+
 ## Contributing
 
 To contribute to this project follow these steps:
