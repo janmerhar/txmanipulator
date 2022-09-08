@@ -69,9 +69,69 @@ Options:
   -h, --help                     display help for command
 ```
 
-# Usage example
+## Usage example
 
 ![Usage example](documentation/txmanipulator_cli_example.gif?raw=true "Usage example")
+
+## MDManipulator example
+
+```typescript
+import { MDManipulator } from "txmanipulator"
+
+const md = new MDManipulator(
+  "name_of_input_file.md",
+  "name_of_output_file.csv",
+  "name_of_anki_tag",
+  "run_option: int"
+)
+
+md
+  // Detecting and encapsulating images in <img> tags
+  .imageDetection()
+  // Detecting blocks of code and translating them into HTML
+  .codeDetection()
+  // Creating basic data for writing to csv file
+  .fillCsvData2()
+  // Customization for specific type of anki cards' titles
+  .CSVstyleAllTitles()
+  // Cosmetic improvement for every title of anki cards
+  .titleAnswerReplaceSpecial()
+  // Translating \n line breaks to HTML tag <br>
+  .CSVLineBreaksToHTML()
+
+// Finally writing computed anki cards to .csv file
+md.csvWriteToFile()
+```
+
+## LaTeXManipulator example
+
+```typescript
+import { LaTeXManipulator } from "txmanipulator"
+
+const tex = new LaTeXManipulator(
+  "name_of_input_file.md",
+  "name_of_output_file.csv",
+  "name_of_anki_tag",
+  "run_option: int"
+)
+
+tex
+  // Remove \n end lines
+  .removeEndlines()
+  // Remove \t tabs
+  .removeTabs()
+  // Remove \section LaTeX tags
+  .removeSections()
+  // Remove remaining LaTeX tags
+  .removeLaTeX()
+  // Remove double \n\n end lines
+  .removeDoubleEmptyLines()
+  // Remove LaTeX commented lines that start with %
+  .removeLaTeXComments()
+
+// Finally writing computed Markdown file to .md file
+tex.writeToFile()
+```
 
 ## Contributing
 
