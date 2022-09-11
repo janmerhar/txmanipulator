@@ -25,6 +25,7 @@ _TS
 
 # ignoring other compiled files
 *.csv
+!test/*.csv
 *.txt
 *.exe
 
