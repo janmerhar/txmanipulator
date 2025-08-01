@@ -1,0 +1,13 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Debug manipulator.ts",
+      "runtimeArgs": ["-r", "ts-node/register"],
+      "args": ["${workspaceFolder}/bin/manipulator.ts", "-i", "part1.md"],
+      "cwd": "${workspaceFolder}"
+    }
+  ]
+}
