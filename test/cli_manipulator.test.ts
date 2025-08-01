@@ -1,44 +1,61 @@
-// import { templateCommander } from "../cli_args/cli_template"
-import dateFormat from "dateformat"
+import { Command } from "commander"
 
-// templateCommander.parse(process.argv)
+// A little hack to reset the commander instance before each test.
+// This is needed because commander instances are singletons and retain their state.
+const freshCommander = () => {
+  const commander = new Command()
+  commander
+    .requiredOption("-i, --input <string>", "Name of file that will be imported")
+    .requiredOption(
+      "-tof, --type-of-file <number>",
+      "1 => MD file, 2 => CSV file, 3 => MD and CSV file",
+      "3"
+    )
+    .option(
+      "-at, --anki-tag <string>",
+      "Input tag field value for imported document: eg. OMA-13"
+    )
+    .option(
+      "-f, --file-name <string>",
+      "Name of the output file",
+      "DEFAULT_NAME" // Using a default string for predictability in tests
+    )
+    .option(
+      "-r, --run <number>",
+      "1 => runs manipulated data in program,  0 => doesn't run anything",
+      "1"
+    )
+  return commander
+}
 
-describe("templateCommander", () => {
-  const defaultObject = {
-    author: "",
-    date: dateFormat(new Date(), "yyyy-mm-dd"),
-    fileName: "DEFAULT_NAME",
-  }
-
-  it("parses required arguments", () => {
-    // Single word input
-    const {
-      templateCommander: templateCommander1,
-    } = require("../cli_args/cli_template")
-
-    const input1 = ["dummy", "dummy", ..."-t Title".split(" ")]
-    templateCommander1.parse(input1)
-    expect(templateCommander1.opts()).toEqual({
-      ...defaultObject,
-      title: "Title",
-    })
-
-    // Multiple word input
-    const {
-      templateCommander: templateCommander2,
-    } = require("../cli_args/cli_template")
-
-    const input2 = ["dummy", "dummy", ..."-t Title, but longer".split(" ")]
-    templateCommander2.parse(input2)
-    expect(templateCommander2.opts()).toEqual({
-      ...defaultObject,
-      // For some reason commander.js library
-      // keeps old arguments alive
-      // i believe it is due to
-      // CommandFunctions.joinThings()
-      // that cocatenates previous arguments with newer ones
-      title: "Title" + " " + "Title, but longer",
-    })
+describe("manipulatorManCommander", () => {
+  it("parses required arguments and one optional argument", () => {
+    const commander = freshCommander()
+    const input = ["dummy", "dummy", "-i", "test.md", "-at", "MyTag"]
+    commander.parse(input)
+    const opts = commander.opts()
+    expect(opts.input).toBe("test.md")
+    expect(opts.ankiTag).toBe("MyTag")
   })
-  it.todo("parses optional arguments")
+
+  it("uses default values for optional arguments", () => {
+    const commander = freshCommander()
+    const input = ["dummy", "dummy", "-i", "test.md"]
+    commander.parse(input)
+    const opts = commander.opts()
+    expect(opts.input).toBe("test.md")
+    expect(opts.typeOfFile).toBe("3")
+    expect(opts.fileName).toBe("DEFAULT_NAME")
+    expect(opts.run).toBe("1")
+    expect(opts.ankiTag).toBeUndefined()
+  })
+
+  it("handles multi-word arguments", () => {
+    const commander = freshCommander()
+    const input = ["dummy", "dummy", "-i", "my file.md", "-at", "my anki tag"]
+    commander.parse(input)
+    const opts = commander.opts()
+    expect(opts.input).toBe("my file.md")
+    expect(opts.ankiTag).toBe("my anki tag")
+  })
 })

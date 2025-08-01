@@ -6,6 +6,8 @@ import { manipulatorManCommander } from "../cli_args/cli_manipulator"
 import { LaTeXManipulator } from "../manipulator/LaTeXManipulator"
 import { MDManipulator } from "../manipulator/MDManipulator"
 
+manipulatorManCommander.parse(process.argv)
+
 const manipulatorOpts = manipulatorManCommander.opts()
 const extensionName = path.extname(manipulatorOpts.input)
 
