@@ -34,6 +34,6 @@ manipulatorManCommander
     "1"
   )
 
-manipulatorManCommander.parse()
+
 
 export { manipulatorManCommander }
