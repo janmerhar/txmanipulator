@@ -25,7 +25,7 @@ class MDManipulator {
     this.fileName =
       fileName ?? path.basename(filePath).replace(path.extname(filePath), "")
     this.runPrograms = runPrograms
-    this.fileText = fileText ?? fs.readFileSync(filePath, "utf-8")
+    this.fileText = fileText || fs.readFileSync(filePath, "utf-8")
     this.tag = this.generateTag(tag)
   }
 
@@ -155,7 +155,6 @@ class MDManipulator {
     const lines = this.fileText.split(/\r*\n/g)
     // creating an array of indexes
     const questions = [
-      lines[0],
       ...lines.filter((value: string, index: number) => {
         let niz = String(lines[index + 1])
         if (niz.match(/----+/)) {
