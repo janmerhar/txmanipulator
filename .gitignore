@@ -7,6 +7,7 @@ tex
 # compiled LaTeX files
 *.pdf
 *.tex
+!test/*.tex
 *.synctex.gz
 *.aux
 *.fdb_latexmk
@@ -24,6 +25,7 @@ _TS
 
 # ignoring other compiled files
 *.csv
+!test/*.csv
 *.txt
 *.exe
 
